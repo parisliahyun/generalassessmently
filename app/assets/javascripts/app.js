@@ -1,14 +1,10 @@
-/*
-__________                __   ___.                          .__                                               __   
-\______   \_____    ____ |  | _\_ |__   ____   ____   ____   |__| ______   ________  _  __ ____   ____   _____/  |_ 
- |    |  _/\__  \ _/ ___\|  |/ /| __ \ /  _ \ /    \_/ __ \  |  |/  ___/  /  ___/\ \/ \/ // __ \_/ __ \_/ __ \   __\
- |    |   \ / __ \\  \___|    < | \_\ (  <_> )   |  \  ___/  |  |\___ \   \___ \  \     /\  ___/\  ___/\  ___/|  |  
- |______  /(____  /\___  >__|_ \|___  /\____/|___|  /\___  > |__/____  > /____  >  \/\_/  \___  >\___  >\___  >__|  
-        \/      \/     \/     \/    \/            \/     \/          \/       \/              \/     \/     \/      
-*/
+var public_spreadsheet_url = 'https://docs.google.com/spreadsheet/pub?key=0AuZMGuR3ulpfdFpGNld2VmZqdk0xR1R4dXpvMUJvZFE&output=html';
+
+var storage =  Tabletop.init( { key: public_spreadsheet_url, 
+                                  wait: true } )
 
 
-/*
+  /*
    _____             .___     .__          
   /     \   ____   __| _/____ |  |   ______
  /  \ /  \ /  _ \ / __ |/ __ \|  |  /  ___/
@@ -17,7 +13,15 @@ __________                __   ___.                          .__                
         \/            \/    \/          \/ 
 */
 
-
+var Assessment = Backbone.Model.extend({
+  idAttribute: 'coursematerial',
+  tabletop:  {
+  instance: storage,
+  sheet: 'Students'
+  },
+  sync: Backbone.tabletopSync
+})
+  
 /*
 _________        .__  .__                 __  .__                      
 \_   ___ \  ____ |  | |  |   ____   _____/  |_|__| ____   ____   ______
@@ -27,8 +31,15 @@ _________        .__  .__                 __  .__
         \/                      \/     \/                    \/     \/ 
 */
 
-
-
+var AssessmentCollection = Backbone.Collection.extend({
+  model: Assessment,
+  tabletop: {
+  instance: storage,  
+  sheet: 'Students'
+  },
+  sync: Backbone.tabletopSync
+});
+  
 /*
 ____   ____.__                     
 \   \ /   /|__| ______  _  ________
@@ -38,6 +49,15 @@ ____   ____.__
                    \/           \/ 
 */        
 
+var AssessmentView = Backbone.View.extend({
+      tagname: 'div',
+      // template: _.template($("#assessment-template").html()),
+
+      render: function() {
+        $(this.el).html(this.template(this.model.toJSON()));
+        return this;
+      }
+});
 
 /*
 .___       .__  __  .__       .__  .__                __  .__               
@@ -47,4 +67,24 @@ ____   ____.__
 |___|___|  /__||__| |__(____  /____/__/_____ \(____  /__| |__|\____/|___|  /
          \/                 \/              \/     \/                    \/ 
 */
+
+ $(document).ready( function() {
+  var stuff = new AssessmentCollection();
+  stuff.fetch({ success: showInfo });  
+  console.log(stuff);
+  });
+
+  function showInfo(stuff) {
+    var commandline_view = new AssessmentView({ model: stuff.get('Command Line') });
+    $("#content").append( commandline_view.render().el );
+
+   week = new Assessment({coursematerial: 'Week 1'})
+   week.fetch();
+
+   var week_view = new AssessmentView({ model: week});
+   $("#content").append( week_view.render().el);   
+  }
+
+
+        
 
