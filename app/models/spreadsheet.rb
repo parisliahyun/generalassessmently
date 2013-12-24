@@ -1,9 +1,17 @@
+DataMapper.setup :default, {
+  :adapter  => 'postgres',
+  :host     => 'localhost',
+  :database => 'GeneralAssessmently_development',
+  :user     => 'Paris'
+}
+
 class Spreadsheet
   include DataMapper::Resource
   
   property :id, Serial
-  property :google_key, String, :format => /\A[\w\-]*\z/, :unique => true, :required => true
-  
+  property :google_key, String, :unique => true, :required => true
+  # :format => /\A[\w\-]*\z/,
+
   def base_json_path
     "/feeds/worksheets/#{google_key}/public/basic?alt=json-in-script&callback=Tabletop.singleton.loadSheets"
   end
@@ -70,7 +78,7 @@ class Spreadsheet
   
 end
 
-DataMapper.finalize.auto_upgrade!
+DataMapper.finalize
 
   def index
     erb :index
