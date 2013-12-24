@@ -49,15 +49,15 @@ ____   ____.__
                    \/           \/ 
 */        
 
-var AssessmentView = Backbone.View.extend({
+var ListView = Backbone.View.extend({
       tagname: 'div',
-      // template: _.template($("#assessment-template").html()),
+      template: _.template($("#assessment-template").html()),
 
       render: function() {
         $(this.el).html(this.template(this.model.toJSON()));
         return this;
       }
-});
+})
 
 /*
 .___       .__  __  .__       .__  .__                __  .__               
@@ -71,19 +71,19 @@ var AssessmentView = Backbone.View.extend({
  $(document).ready( function() {
   var stuff = new AssessmentCollection();
   stuff.fetch({ success: showInfo });  
-  console.log(stuff);
   });
 
   function showInfo(stuff) {
-    var commandline_view = new AssessmentView({ model: stuff.get('Command Line') });
-    $("#content").append( commandline_view.render().el );
+    // var commandline_view = new ListView({ model: stuff.get('Command Line') });
+    // $("#content").append( commandline_view.render().el );
 
    week = new Assessment({coursematerial: 'Week 1'})
    week.fetch();
 
-   var week_view = new AssessmentView({ model: week});
+   var week_view = new ListView({ model: week});
    $("#content").append( week_view.render().el);   
   }
+  // document.write("The published spreadsheet is located at <a target='_new' href='" + public_spreadsheet_url + "'>" + public_spreadsheet_url + "</a>");
 
 
         

@@ -13,8 +13,10 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-//= require tabletop
+//= require json2
 //= require underscore
+
 //= require backbone
 //= require backbone.tabletopSync
+//= require tabletop
 //= require_tree .
