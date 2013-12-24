@@ -83,8 +83,4 @@ var ListView = Backbone.View.extend({
    var week_view = new ListView({ model: week});
    $("#content").append( week_view.render().el);   
   }
-  // document.write("The published spreadsheet is located at <a target='_new' href='" + public_spreadsheet_url + "'>" + public_spreadsheet_url + "</a>");
-
-
-        
 
