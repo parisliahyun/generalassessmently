@@ -1,10 +1,3 @@
-DataMapper.setup :default, {
-  :adapter  => 'postgres',
-  :host     => 'localhost',
-  :database => 'GeneralAssessmently_development',
-  :user     => 'Paris'
-}
-
 class Spreadsheet
   # validates :url, presence: true
   include DataMapper::Resource
