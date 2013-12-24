@@ -2,7 +2,7 @@ class Spreadsheet
   include DataMapper::Resource
   
   property :id, Serial
-  property :google_key, String, :unique => true, :required => true, :format => /\A[\w\-]*\z/
+  property :google_key, String, :unique => true, :required => true
   
   def base_json_path
     "/feeds/worksheets/#{google_key}/public/basic?alt=json-in-script&callback=Tabletop.singleton.loadSheets"
@@ -69,7 +69,8 @@ class Spreadsheet
   end
   
 end
-DataMapper.finalize.auto_upgrade!
+
+DataMapper.finalize
 
   def index
     erb :index
