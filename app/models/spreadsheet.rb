@@ -70,7 +70,7 @@ class Spreadsheet
   
 end
 
-DataMapper.finalize
+DataMapper.finalize.auto_upgrade!
 
   def index
     erb :index
