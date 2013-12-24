@@ -1,7 +1,6 @@
 class Spreadsheet
-  # validates :url, presence: true
   include DataMapper::Resource
-
+  
   property :id, Serial
   property :google_key, String, :unique => true, :required => true, :format => /\A[\w\-]*\z/
   
@@ -70,7 +69,6 @@ class Spreadsheet
   end
   
 end
-
 DataMapper.finalize.auto_upgrade!
 
   def index
