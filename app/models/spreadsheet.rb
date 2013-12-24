@@ -10,7 +10,6 @@ class Spreadsheet
   
   property :id, Serial
   property :google_key, String, :unique => true, :required => true
-  # :format => /\A[\w\-]*\z/,
 
   def base_json_path
     "/feeds/worksheets/#{google_key}/public/basic?alt=json-in-script&callback=Tabletop.singleton.loadSheets"
