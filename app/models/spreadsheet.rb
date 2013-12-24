@@ -2,11 +2,11 @@ DataMapper.setup :default, {
   :adapter  => 'postgres',
   :host     => 'localhost',
   :database => 'GeneralAssessmently_development',
-  :user     => 'Paris',
+  :user     => 'Paris'
 }
 
-class Spreadsheet < ActiveRecord::Base
-  validates :url, presence: true
+class Spreadsheet
+  # validates :url, presence: true
   include DataMapper::Resource
 
   property :id, Serial
@@ -80,6 +80,30 @@ end
 
 DataMapper.finalize.auto_upgrade!
 
+  def index
+    erb :index
+  end
+
+  def create
+    spreadsheet = Spreadsheet.from_key(params[:key])
+    if spreadsheet.save
+      @notice = "Added spreadsheet"
+    else
+      @error = "Could not add spreadsheet"
+    end
+    
+    erb :index
+  end
+
+  def process
+    redirect root_path
+  end
+
+  def update
+    @updated = Spreadsheet.select(&:write_content)
+    @notice = "Updated #{@updated.length} spreadsheets"
+    erb :index
+  end
 
 
 

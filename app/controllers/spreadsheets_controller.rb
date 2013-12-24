@@ -12,11 +12,11 @@ class SpreadsheetsController < ApplicationController
       @error = "Could not add spreadsheet"
     end
     
-    erb :index
+    redirect_to root_path
   end
 
   def process
-    redirect root_path
+    redirect_to root_path
   end
 
   def update
