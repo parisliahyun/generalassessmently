@@ -2,7 +2,7 @@ class Spreadsheet
   include DataMapper::Resource
   
   property :id, Serial
-  property :google_key, String, :unique => true, :required => true
+  property :google_key, String, :format => /\A[\w\-]*\z/, :unique => true, :required => true
   
   def base_json_path
     "/feeds/worksheets/#{google_key}/public/basic?alt=json-in-script&callback=Tabletop.singleton.loadSheets"
