@@ -11,8 +11,11 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'bootstrap-sass', '~> 3.0.3.0'
 gem "datamapper", "~> 1.2.0"
-gem "fog", "~> 1.19.0"
+# gem "fog", "~> 1.19.0"
 gem "dm-postgres-adapter", "~> 1.2.0"
+gem 'nokogiri'
+gem 'paperclip', '~> 3.0'
+gem 'aws-sdk', '~> 1.20.0'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
