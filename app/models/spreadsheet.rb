@@ -3,6 +3,8 @@ DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/GeneralA
 
 class Spreadsheet
   include DataMapper::Resource
+  # include CarrierWaveDirect
+
 
   property :id, Serial
   property :google_key, String, :unique => true, :required => true

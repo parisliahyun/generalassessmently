@@ -17,6 +17,8 @@ gem 'nokogiri'
 # gem 'paperclip', '~> 3.0'
 gem 'aws-sdk', '~> 1.20.0'
 # gem "dm-paperclip", "~> 2.5.0"
+gem 'carrierwave_direct'
+gem 'sidekiq'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
