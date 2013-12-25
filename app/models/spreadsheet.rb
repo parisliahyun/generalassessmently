@@ -1,9 +1,12 @@
-DataMapper.setup :default, {
-  :adapter  => 'postgres',
-  :host     => 'localhost',
-  :database => 'GeneralAssessmently_development',
-  :user     => 'Paris'
-}
+
+DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/GeneralAssessmently_development')
+
+# DataMapper.setup :default, {
+#   :adapter  => 'postgres',
+#   :host     => 'localhost',
+#   :database => 'GeneralAssessmently_development',
+#   :user     => 'Paris'
+# }
 
 class Spreadsheet
   include DataMapper::Resource
