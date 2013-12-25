@@ -18,7 +18,8 @@ var storage =  Tabletop.init( { key: public_spreadsheet_url,
 var Assessment = Backbone.Model.extend({
   idAttribute: 'coursematerial',
   tabletop:  {
-  instance: storage,
+  proxy: 'https://s3.amazonaws.com/google_spreadsheets',
+  // instance: storage,
   sheet: 'Students'
   },
   sync: Backbone.tabletopSync
@@ -27,7 +28,8 @@ var Assessment = Backbone.Model.extend({
 var Info = Backbone.Model.extend({
   idAttribute: 'info',
   tabletop:  {
-  instance: storage,
+  proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
+  // instance: storage,
   sheet: 'Students'
   },
   sync: Backbone.tabletopSync
@@ -36,7 +38,8 @@ var Info = Backbone.Model.extend({
 var Value = Backbone.Model.extend({
   idAttribute: 'value',
   tabletop:  {
-  instance: storage,
+  proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
+  // instance: storage,
   sheet: 'Students'
   },
   sync: Backbone.tabletopSync
@@ -54,7 +57,8 @@ _________        .__  .__                 __  .__
 var AssessmentCollection = Backbone.Collection.extend({
   model: Assessment,
   tabletop: {
-  instance: storage,  
+  proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
+  // instance: storage,  
   sheet: 'Students'
   },
   sync: Backbone.tabletopSync
@@ -63,7 +67,8 @@ var AssessmentCollection = Backbone.Collection.extend({
 var AssessmentCollection = Backbone.Collection.extend({
   model: Info,
   tabletop: {
-  instance: storage,  
+  proxy: 'https://s3.amazonaws.com/google_spreadsheets',
+  // instance: storage,  
   sheet: 'Students'
   },
   sync: Backbone.tabletopSync
@@ -72,7 +77,8 @@ var AssessmentCollection = Backbone.Collection.extend({
 var AssessmentCollection = Backbone.Collection.extend({
   model: Value,
   tabletop: {
-  instance: storage,  
+  proxy: 'https://s3.amazonaws.com/google_spreadsheets',
+  // instance: storage,  
   sheet: 'Students'
   },
   sync: Backbone.tabletopSync
