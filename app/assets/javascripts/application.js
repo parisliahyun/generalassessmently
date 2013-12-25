@@ -15,8 +15,8 @@
 //= require bootstrap
 //= require json2
 //= require underscore
-
 //= require backbone
 //= require backbone.tabletopSync
+//= require backbonerailsauthtokenadapter
 //= require tabletop
 //= require_tree .

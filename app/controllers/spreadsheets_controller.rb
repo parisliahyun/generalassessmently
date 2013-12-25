@@ -15,10 +15,6 @@ class SpreadsheetsController < ApplicationController
     redirect_to root_path
   end
 
-  def process
-    redirect_to root_path
-  end
-
   def update
     @updated = Spreadsheet.select(&:write_content)
     @notice = "Updated #{@updated.length} spreadsheets"

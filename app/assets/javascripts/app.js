@@ -3,6 +3,8 @@ var public_spreadsheet_url = 'https://docs.google.com/spreadsheet/pub?key=0AuZMG
 var storage =  Tabletop.init( { key: public_spreadsheet_url, 
                                   wait: true } )
 
+// CSRF 
+ BackboneRailsAuthTokenAdapter.fixSync(Backbone);
 
   /*
    _____             .___     .__          
@@ -81,6 +83,7 @@ var ListView = Backbone.View.extend({
    week.fetch();
 
    var week_view = new ListView({ model: week});
-   $("#content").append( week_view.render().el);   
+   $("#content").append( week_view.render().el);  
+
   }
 
