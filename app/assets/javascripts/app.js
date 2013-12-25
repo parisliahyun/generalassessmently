@@ -23,6 +23,24 @@ var Assessment = Backbone.Model.extend({
   },
   sync: Backbone.tabletopSync
 })
+
+var Info = Backbone.Model.extend({
+  idAttribute: 'info',
+  tabletop:  {
+  instance: storage,
+  sheet: 'Students'
+  },
+  sync: Backbone.tabletopSync
+})
+
+var Value = Backbone.Model.extend({
+  idAttribute: 'value',
+  tabletop:  {
+  instance: storage,
+  sheet: 'Students'
+  },
+  sync: Backbone.tabletopSync
+})
   
 /*
 _________        .__  .__                 __  .__                      
@@ -35,6 +53,24 @@ _________        .__  .__                 __  .__
 
 var AssessmentCollection = Backbone.Collection.extend({
   model: Assessment,
+  tabletop: {
+  instance: storage,  
+  sheet: 'Students'
+  },
+  sync: Backbone.tabletopSync
+});
+
+var AssessmentCollection = Backbone.Collection.extend({
+  model: Info,
+  tabletop: {
+  instance: storage,  
+  sheet: 'Students'
+  },
+  sync: Backbone.tabletopSync
+});
+
+var AssessmentCollection = Backbone.Collection.extend({
+  model: Value,
   tabletop: {
   instance: storage,  
   sheet: 'Students'
@@ -79,11 +115,20 @@ var ListView = Backbone.View.extend({
     // var commandline_view = new ListView({ model: stuff.get('Command Line') });
     // $("#content").append( commandline_view.render().el );
 
-   week = new Assessment({coursematerial: 'Week 1'})
-   week.fetch();
-
-   var week_view = new ListView({ model: week});
-   $("#content").append( week_view.render().el);  
-
+   studentname = new Assessment({coursematerial: 'Name'})
+   studentname.fetch();
+   info = new Info({info: 'Paris Hyun'})
+   info.fetch();
+   value = new Value({value: 'WDI Sept 2013'})
+   info.fetch();
+   var heading_view = new ListView({ model: studentname});
+   $("#content").append( heading_view.render().el);  
   }
+
+
+
+
+
+
+
 

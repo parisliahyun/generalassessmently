@@ -11,7 +11,6 @@ class SpreadsheetsController < ApplicationController
     else
       @error = "Could not add spreadsheet"
     end
-    
     redirect_to root_path
   end
 
