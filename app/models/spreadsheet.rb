@@ -31,7 +31,7 @@ class Spreadsheet
   end
   
   def directory
-    storage.directories.get(ENV['AWS_BUCKET']) || storage.directories.create(:key => 'google_spreadsheets', :public => true)
+    storage.directories.get('google_spreadsheets']) || storage.directories.create(:key => 'google_spreadsheets', :public => true)
   end
   
   def write(path, options = {})    
@@ -43,7 +43,7 @@ class Spreadsheet
   
   def upload(filename, content)
     # Using an obsolete content_type because IE8 and before chokes on application/javascript and hey, Google does it.
-    directory.files.create(:key => 'google_spreadsheets', :body => content, :public => true, :content_type => "text/javascript")
+    directory.files.create(:key => filename, :body => content, :public => true, :content_type => "text/javascript")
   end
   
   def write_content
