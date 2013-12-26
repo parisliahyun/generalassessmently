@@ -22,6 +22,7 @@ gem 'carrierwave-datamapper', :require => 'carrierwave/datamapper'
 gem "resque"
 gem "redis"
 gem "pry-rails"
+gem 'unf'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
