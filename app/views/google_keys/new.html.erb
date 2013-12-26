@@ -1,0 +1,4 @@
+<%= direct_upload_form_for Spreadsheet.create do |f| %>
+  <%= f.file_field :google_key %>
+  <%= f.submit "Upload Directly!" %>
+<% end %>

@@ -14,11 +14,14 @@ gem "datamapper", "~> 1.2.0"
 gem "fog", "~> 1.19.0"
 gem "dm-postgres-adapter", "~> 1.2.0"
 gem 'nokogiri'
-# gem 'paperclip', '~> 3.0'
 gem 'aws-sdk', '~> 1.20.0'
-# gem "dm-paperclip", "~> 2.5.0"
 gem 'carrierwave_direct'
 gem 'sidekiq'
+gem 'carrierwave'
+gem 'carrierwave-datamapper', :require => 'carrierwave/datamapper'
+gem "resque"
+gem "redis"
+gem "pry-rails"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

@@ -1,9 +1,12 @@
 CarrierWave.configure do |config|
   config.fog_credentials = {
-    :provider               => 'AWS',       # required
-    :aws_access_key_id      => ENV["AWS_ACCESS_KEY_ID"],       # required
-    :aws_secret_access_key  => ENV["AWS_SECRET_ACCESS_KEY"],       # required
-    :region                 => 'eu-east-1'  # optional, defaults to 'us-east-1'
+    :provider               => 'AWS',
+    :aws_access_key_id      => ENV['AWS_ACCESS_KEY_ID'],
+    :aws_secret_access_key  => ENV['AWS_SECRET_ACCESS_KEY']
   }
-    config.fog_directory  = "google_spreadsheets"                     # required
+  config.fog_directory  = 'google_spreadsheets' # bucket name
 end
+
+
+
+    

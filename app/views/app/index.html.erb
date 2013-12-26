@@ -8,15 +8,7 @@
   <form action="/spreadsheets" method="post" class="form-inline">
     <input name="key" type="text" placeholder="Add a published URL"> 
     <button type="submit" class="btn btn-primary">Add it</button>
-  </form>
-
-<!-- <div class="span6">
-<h2>The Spreadsheets</h2> 
- direct_upload_form_for Spreadsheet.new.google_key do |f| %>
-  <p> f.file_field :key %></p>
-  <p> f.submit "Add" %></p>
- end %> -->
-
+  </form> 
 
   <h3>Current spreadsheets</h3>
   <ul>
@@ -29,9 +21,9 @@
           <span class="label label-success">Updated</span>
         <% end %>
       </li>
-    <% end %>
-    
+    <% end %> 
   </ul>
+  
   <form action="/process" method="post">
     <p><button type="submit" class="btn btn-submit">Sync all spreadsheets</button></p>
   </form>
