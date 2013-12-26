@@ -31,7 +31,7 @@ class Spreadsheet
   end
   
   def directory
-    storage.directories.get(ENV['AWS_BUCKET']) || storage.directories.create(:key => ENV['AWS_BUCKET'], :public => true)
+    storage.directories.get(ENV['AWS_BUCKET']) || storage.directories.create(:key => 'google_spreadsheets', :public => true)
   end
   
   def write(path, options = {})    
