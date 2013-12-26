@@ -1,6 +1,7 @@
 class ProcessController < ApplicationController
 
   def index
+    erb :index
   end
 
   def create
