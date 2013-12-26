@@ -31,7 +31,7 @@ class Spreadsheet
   end
   
   def directory
-    storage.directories.get('google_spreadsheets') || storage.directories.create(:key => 'google_spreadsheets', :public => true)
+    storage.directories.get('googlespreadsheets') || storage.directories.create(:key => 'googlespreadsheets', :public => true)
   end
   
   def write(path, options = {})    
