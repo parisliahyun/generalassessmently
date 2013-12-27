@@ -3,7 +3,7 @@ DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/GeneralA
 
 class Spreadsheet
   include DataMapper::Resource
-  mount_uploader :google_key, GooglekeyUploader
+  # mount_uploader :google_key, GooglekeyUploader
 
   property :id, Serial
   property :google_key, String, :unique => true, :required => true

@@ -1,3 +1,3 @@
-class GooglekeyUploader < CarrierWave::Uploader::Base
-  include CarrierWaveDirect::Uploader
-end
+# class GooglekeyUploader < CarrierWave::Uploader::Base
+#   include CarrierWaveDirect::Uploader
+# end
