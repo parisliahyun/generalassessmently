@@ -27,7 +27,11 @@ class Spreadsheet
   end
   
   def storage
-    @storage ||= Fog::Storage.new({:provider => 'AWS', :aws_access_key_id => ENV['AWS_ACCESS_KEY_ID'], :aws_secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']})
+    if Rails.env.production?
+      @storage ||= Fog::Storage.new({:provider => 'AWS', :aws_access_key_id => ENV['AWS_ACCESS_KEY_ID'], :aws_secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']})
+    else 
+      @storage ||= Fog::Storage.new({:provider => 'AWS', :aws_access_key_id => S3_CONFIG['aws_access_key_id'], :aws_secret_access_key => S3_CONFIG['aws_secret_access_key']})
+    end
   end
   
   def directory
