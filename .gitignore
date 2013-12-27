@@ -16,5 +16,6 @@
 /tmp
 
 # ignore s3 config
-config/s3.yml
 config/initializers/s3.rb
+config/s3.yml
+
