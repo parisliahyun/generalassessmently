@@ -23,6 +23,7 @@ gem "resque"
 gem "redis"
 gem "pry-rails"
 gem 'unf'
+gem "dm-serializer", "~> 1.2.2"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

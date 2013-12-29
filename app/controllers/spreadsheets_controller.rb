@@ -1,20 +1,22 @@
 class SpreadsheetsController < ApplicationController
 
   def index
-    erb :index
+    @spreadsheets = Spreadsheet.all
+    @spreadsheets.to_json
+  end
+
+  def show
+    @spreadsheet = Spreadsheet.get(params[:id])
+    @spreadsheet.to_json
   end
 
   def create
     spreadsheet = Spreadsheet.from_key(params[:key]) 
-    # binding.pry
-    # spreadsheet = spreadsheet.slice! "uploads"
     if spreadsheet.save
-       # @uploader = spreadsheet.google_key
       @notice = "Added spreadsheet"
     else
       @error = "Could not add spreadsheet"
-    end
-      
+    end     
       redirect_to root_path
   end
 

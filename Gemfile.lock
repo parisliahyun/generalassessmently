@@ -244,6 +244,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   datamapper (~> 1.2.0)
   dm-postgres-adapter (~> 1.2.0)
+  dm-serializer (~> 1.2.2)
   fog (~> 1.19.0)
   jbuilder (~> 1.2)
   jquery-rails
