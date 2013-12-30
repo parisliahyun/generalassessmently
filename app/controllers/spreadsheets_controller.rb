@@ -1,6 +1,7 @@
 class SpreadsheetsController < ApplicationController
 
   def index
+    # @spreadsheets = spreadsheets
     @spreadsheets = Spreadsheet.all
     @spreadsheets.to_json
   end
