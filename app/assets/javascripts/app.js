@@ -1,3 +1,4 @@
+window.onload = function() { init() };
 
 $result = "";
 $.ajax({ url: 'spreadsheets', 
@@ -7,15 +8,42 @@ $.ajax({ url: 'spreadsheets',
   }   
 });
 
-omg = function() {
-  for (var i = 0; i < $result.length; i++) { 
-  console.log($result[i].innerHTML);   
-  $result[i].innerHTML 
-  }    
-}  
+// omg = function() {
+//   for (i = 0; i < $result.length; i++) { 
+//   console.log("'" + $result[i].innerHTML + "'");   
+//   "'" + $result[i].innerHTML + "'"
+//   }    
+// }  
 
-var storage = Tabletop.init( { key: omg(), 
-                                   wait: true } ) 
+// var storage = Tabletop.init( { key: omg(), 
+                                   // wait: true } ) 
+
+function init() {
+  for (i = 0; i < $result.length; i++) { 
+    Tabletop({ 
+      key: $result[i].innerHTML,
+      callback: showInfo,
+      simpleSheet: true
+    });
+  }
+}
+
+var count = 0;
+function showInfo(data, tabletop) {
+  // data comes through as a simple array since simpleSheet is turned on
+  var div = document.getElementById('data'),
+      html = "<h1>SHEET " + (++count) + "</h1>",
+      prop, i;
+  for(i = 0; i < data.length; i++) {
+    for(prop in data[i]) {
+      html = html + "&nbsp;-&nbsp;" + data[i][prop];
+    }
+    html = html + "<hr><br>";
+  }
+  div.innerHTML = div.innerHTML + html;
+}
+
+
 
 
 // START BACKBONE
@@ -26,7 +54,7 @@ var storage = Tabletop.init( { key: omg(),
                                   // wait: true } )
 
 // CSRF 
- BackboneRailsAuthTokenAdapter.fixSync(Backbone);
+ // BackboneRailsAuthTokenAdapter.fixSync(Backbone);
 
   /*
    _____             .___     .__          
@@ -37,36 +65,36 @@ var storage = Tabletop.init( { key: omg(),
         \/            \/    \/          \/ 
 */
 
-var Assessment = Backbone.Model.extend({
-  idAttribute: 'coursematerial',
-  tabletop:  {
-  proxy: 'https://s3.amazonaws.com/google_spreadsheets',
-  // instance: 'http://localhost:3000/spreadsheets',
-  instance: storage,
-  sheet: 'Students'
-  },
-  sync: Backbone.tabletopSync,  
-})
+// var Assessment = Backbone.Model.extend({
+//   idAttribute: 'coursematerial',
+//   tabletop:  {
+//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',
+//   // instance: 'http://localhost:3000/spreadsheets',
+//   instance: storage,
+//   sheet: 'Students'
+//   },
+//   sync: Backbone.tabletopSync,  
+// })
 
-var Info = Backbone.Model.extend({
-  idAttribute: 'info',
-  tabletop:  {
-  proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
-  instance: storage,
-  sheet: 'Students'
-  },
-  sync: Backbone.tabletopSync
-})
+// var Info = Backbone.Model.extend({
+//   idAttribute: 'info',
+//   tabletop:  {
+//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
+//   instance: storage,
+//   sheet: 'Students'
+//   },
+//   sync: Backbone.tabletopSync
+// })
 
-var Value = Backbone.Model.extend({
-  idAttribute: 'value',
-  tabletop:  {
-  proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
-  instance: storage,
-  sheet: 'Students'
-  },
-  sync: Backbone.tabletopSync
-})
+// var Value = Backbone.Model.extend({
+//   idAttribute: 'value',
+//   tabletop:  {
+//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
+//   instance: storage,
+//   sheet: 'Students'
+//   },
+//   sync: Backbone.tabletopSync
+// })
   
 /*
 _________        .__  .__                 __  .__                      
@@ -77,35 +105,35 @@ _________        .__  .__                 __  .__
         \/                      \/     \/                    \/     \/ 
 */
 
-var AssessmentCollection = Backbone.Collection.extend({
-  model: Assessment,
-  tabletop: {
-  proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
-  instance: storage,  
-  sheet: 'Students'
-  },
-  sync: Backbone.tabletopSync
-});
+// var AssessmentCollection = Backbone.Collection.extend({
+//   model: Assessment,
+//   tabletop: {
+//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
+//   instance: storage,  
+//   sheet: 'Students'
+//   },
+//   sync: Backbone.tabletopSync
+// });
 
-var AssessmentCollection = Backbone.Collection.extend({
-  model: Info,
-  tabletop: {
-  proxy: 'https://s3.amazonaws.com/google_spreadsheets',
-  instance: storage,  
-  sheet: 'Students'
-  },
-  sync: Backbone.tabletopSync
-});
+// var AssessmentCollection = Backbone.Collection.extend({
+//   model: Info,
+//   tabletop: {
+//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',
+//   instance: storage,  
+//   sheet: 'Students'
+//   },
+//   sync: Backbone.tabletopSync
+// });
 
-var AssessmentCollection = Backbone.Collection.extend({
-  model: Value,
-  tabletop: {
-  proxy: 'https://s3.amazonaws.com/google_spreadsheets',
-  instance: storage,  
-  sheet: 'Students'
-  },
-  sync: Backbone.tabletopSync
-});
+// var AssessmentCollection = Backbone.Collection.extend({
+//   model: Value,
+//   tabletop: {
+//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',
+//   instance: storage,  
+//   sheet: 'Students'
+//   },
+//   sync: Backbone.tabletopSync
+// });
   
 /*
 ____   ____.__                     
@@ -116,15 +144,15 @@ ____   ____.__
                    \/           \/ 
 */        
 
-var ListView = Backbone.View.extend({
-      tagname: 'div',
-      template: _.template($("#assessment-template").html()),
+// var ListView = Backbone.View.extend({
+//       tagname: 'div',
+//       template: _.template($("#assessment-template").html()),
 
-      render: function() {
-        $(this.el).html(this.template(this.model.toJSON()));
-        return this;
-      }
-})
+//       render: function() {
+//         $(this.el).html(this.template(this.model.toJSON()));
+//         return this;
+//       }
+// })
 
 /*
 .___       .__  __  .__       .__  .__                __  .__               
@@ -135,25 +163,25 @@ var ListView = Backbone.View.extend({
          \/                 \/              \/     \/                    \/ 
 */
 
- $(document).ready( function() {
+ // $(document).ready( function() {
 
-  var stuff = new AssessmentCollection();
-  stuff.fetch({ success: showInfo });  
-  });
+ //  var stuff = new AssessmentCollection();
+ //  stuff.fetch({ success: showInfo });  
+ //  });
 
-  function showInfo(stuff) {
-    // var commandline_view = new ListView({ model: stuff.get('Command Line') });
-    // $("#content").append( commandline_view.render().el );
+ //  function showInfo(stuff) {
+ //    // var commandline_view = new ListView({ model: stuff.get('Command Line') });
+ //    // $("#content").append( commandline_view.render().el );
 
-   studentname = new Assessment({coursematerial: 'Name'})
-   studentname.fetch();
-   info = new Info({info: 'Paris Hyun'})
-   info.fetch();
-   value = new Value({value: 'WDI Sept 2013'})
-   info.fetch();
-   var heading_view = new ListView({ model: studentname});
-   $("#content").append( heading_view.render().el);  
-  }
+ //   studentname = new Assessment({coursematerial: 'Name'})
+ //   studentname.fetch();
+ //   info = new Info({info: 'Paris Hyun'})
+ //   info.fetch();
+ //   value = new Value({value: 'WDI Sept 2013'})
+ //   info.fetch();
+ //   var heading_view = new ListView({ model: studentname});
+ //   $("#content").append( heading_view.render().el);  
+ //  }
 
 
 
