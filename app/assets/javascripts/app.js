@@ -40,8 +40,8 @@ function showInfo1(data, tabletop) {
   var template = Handlebars.compile(source);
 
   $.each( tabletop.sheets("Students").all(), function(i, spreadsheet) {
-    var html = template(spreadsheet);
-    $("#content").append(html);
+    var html1 = template(spreadsheet);
+    $("#content").append(html1);
   });
 }
 
@@ -51,8 +51,8 @@ function showInfo2(data, tabletop) {
   var template = Handlebars.compile(source);
 
   $.each( tabletop.sheets("Students").all(), function(i, spreadsheet) {
-    var html = template(spreadsheet);
-    $("#content").append(html);
+    var html2 = template(spreadsheet);
+    $("#content").append(html2);
   });
 }
 
@@ -75,6 +75,40 @@ $( "#bystudent" ).click(function() {
   alert( "Handler for .click() on student button called." );
   init();
 });
+
+
+// START HIGHCHARTS FOR INSTANCE OVERVIEW
+
+
+$(function () { 
+    $('#overviewchart').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'INSTANCE OVERVIEW'
+        },
+        xAxis: {
+            categories: ['WEEK #', 'WEEK #', 'WEEK #']
+        },
+        yAxis: {
+            title: {
+                text: 'ASSESSMENT SCORE'
+            }
+        },
+        series: [{
+            name: 'WEEKLY HEADING',
+            data: [5, 7, 3]
+        }]
+    });
+});
+
+// document.observe("dom:loaded", function() {
+//    var chart1 = new Highcharts.Chart({
+//       chart: {
+//          renderTo: 'overviewchart',
+//          type: 'bar'
+// }); 
 
 // ******************** BELOW IS A GRAVEYARD OF PREVIOUS SOLUTIONS. RIP. SIDENOTE: THE BACKBONE SOLUTION WORKED. IT JUST PROVED TO CREATE MORE WORK. SO SCREW IT. *****************
 

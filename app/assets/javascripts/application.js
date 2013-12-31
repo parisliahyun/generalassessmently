@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require json2
+//= require highcharts
 //= require handlebars
 //= require underscore
 //= require backbone
