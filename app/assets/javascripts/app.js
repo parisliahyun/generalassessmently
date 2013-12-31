@@ -1,4 +1,4 @@
-// ******************** START HANDLEBARS *****************
+// ******************** START HANDLEBARS  *****************
 
 // GRAB THE DATA FROM THE SERVER.
 $result = "";
@@ -8,6 +8,27 @@ $.ajax({ url: 'spreadsheets',
   { $result = $(response).find('#keys'); 
   }   
 });
+
+// *********** START SIMPLESHEET EXPERIMENTING ***********************
+
+ function simple() {
+        for (i = 0; i < $result.length; i++) { 
+        Tabletop.init( { key: $result[i].innerHTML,
+                         callback: showSimple,
+                         simpleSheet: true, 
+                         parseNumbers: true } );
+      }
+    }  
+
+function showSimple(data) {
+  // data comes through as a simple array since simpleSheet is turned on
+  alert("Successfully processed " + data.length + " rows!")
+  document.getElementById("overview").innerHTML = "<strong>overview data:</strong> " + [ data[0].week, data[1].week, data[2].week ].join(", ");
+  $allthis = $(data)
+  console.log(data);
+}
+
+// *********** END SIMPLESHEET ***********************
 
 // LOAD ALL SPREADSHEETS WHEN THE DOCUMENT HAS LOADED.
 // This doesn't work. Baaaaaahhhh!!!!
@@ -25,16 +46,7 @@ function init() {
   }
 }
 
-// PROCESS ALL THE SPREADSHEET URLS VIA TABLETOP
-function overviewinit() {  
-  for (i = 0; i < $result.length; i++) { 
-    Tabletop.init( { key: $result[i].innerHTML,
-                     callback: showInfo2,
-                     parseNumbers: true } );
-  }
-}
-
-// THE CALLBACK FUNCTION THAT SENDS THE STUDENT DATA TO THE HANDLEBAR TEMPLATE. 
+// THE CALLBACK FUNCTION TO RENDER THE 'STUDENT' HANDLEBAR TEMPLATE. 
 function showInfo1(data, tabletop) {
   var source   = $("#spreadsheet-template").html();
   var template = Handlebars.compile(source);
@@ -45,7 +57,16 @@ function showInfo1(data, tabletop) {
   });
 }
 
-// THE CALLBACK FUNCTION THAT SENDS THE OVERVIEW DATA TO THE HANDLEBAR TEMPLATE. 
+// PROCESS ALL SPREADSHEETS FOR OVERVIEW TEMPLATE
+function initoverview() {  
+  for (i = 0; i < $result.length; i++) { 
+    Tabletop.init( { key: $result[i].innerHTML,
+                     callback: showInfo2,
+                     parseNumbers: true } );
+  }
+}
+
+// THE CALLBACK FUNCTION FOR OVERVIEW TEMPLATE
 function showInfo2(data, tabletop) {
   var source   = $("#overview-template").html();
   var template = Handlebars.compile(source);
@@ -56,51 +77,54 @@ function showInfo2(data, tabletop) {
   });
 }
 
-// BY OVERVIEW BUTTON
+// ******************** END HANDLEBARS   *****************
+
+// BUTTONS 
+
+// 'OVERVIEW' BUTTON
 // render the graph with weekly breakdown
 $( "#overview" ).click(function() {
   // alert( "Handler for .click() on overview button called." );
-  overviewinit();
-});
 
-// BY WEEK BUTTON
+// 'BY WEEK' BUTTON
 // render a page with a list of weeks that link to the drilldowns by topic
 $( "#byweek" ).click(function() {
   alert( "Handler for .click() on week button called." );
 });
 
-// BY STUDENT BUTTON
+// 'BY STUDENT' BUTTON
 // render a page with a list of students that link to the drilldown per student.
 $( "#bystudent" ).click(function() {
   alert( "Handler for .click() on student button called." );
   init();
-});
+});  
+  
 
+  // ******************** BEGIN HIGHCHARTS FOR OVERVIEW ***************** 
 
-// START HIGHCHARTS FOR INSTANCE OVERVIEW
+  $(function () { 
+      $('#overviewchart').highcharts({
+          chart: {
+              type: 'bar'
+          },
+          title: {
+              text: 'FALL 2013 WDI OVERVIEW'
+          },
+          xAxis: {
+              categories: ['WEEK 1', 'WEEK 2', 'WEEK 3', 'WEEK 4', 'WEEK 5', 'WEEK 6', 'WEEK 7', 'WEEK 8', 'WEEK 9 & 10']
+          },
+          yAxis: {
+              title: {
+                  text: 'SELF-ASSESSMENT SCORES ACROSS ALL STUDENTS'
+              }
+          },
+          series: [{
+              name: 'FALL 2013 WDI',
+              data: [600, 780, 1024, 1050, 600, 850, 901, 880, 587]
+          }]
+      });
+  });
 
-
-$(function () { 
-    $('#overviewchart').highcharts({
-        chart: {
-            type: 'bar'
-        },
-        title: {
-            text: 'INSTANCE OVERVIEW'
-        },
-        xAxis: {
-            categories: ['WEEK #', 'WEEK #', 'WEEK #']
-        },
-        yAxis: {
-            title: {
-                text: 'ASSESSMENT SCORE'
-            }
-        },
-        series: [{
-            name: 'WEEKLY HEADING',
-            data: [5, 7, 3]
-        }]
-    });
 });
 
 // document.observe("dom:loaded", function() {
@@ -110,51 +134,15 @@ $(function () {
 //          type: 'bar'
 // }); 
 
-// ******************** BELOW IS A GRAVEYARD OF PREVIOUS SOLUTIONS. RIP. SIDENOTE: THE BACKBONE SOLUTION WORKED. IT JUST PROVED TO CREATE MORE WORK. SO SCREW IT. *****************
 
-// START SIMPLESHEET
-
-// $(function() {
-//     console.log( "ready!" );
-//     init();
-// });
-
-// function init() {
-//   for (i = 0; i < $result.length; i++) { 
-//     Tabletop({ 
-//       key: $result[i].innerHTML,
-//       callback: showInfo,
-//       simpleSheet: true
-//     });
-//   }
-// }
-
-// var count = 0;
-// function showInfo(data, tabletop) {
-//   // data comes through as a simple array since simpleSheet is turned on
-//   var td = document.getElementById('data'),
-//       html = "<p>SHEET " + (++count) + "</p>",
-//       prop, i;
-//   for(i = 0; i < data.length; i++) {
-//     for(prop in data[i]) {
-//       html = html + "&nbsp;&nbsp;" + data[i][prop];
-//     }
-//     html = html + "<hr><br>";
-//   }
-//   td.innerHTML = td.innerHTML + html;
-// }
+  // ******************** END HIGHCHARTS FOR OVERVIEW *****************
 
 
-// START BACKBONE
+
+// ******************** BELOW IS A GRAVEYARD OF PREVIOUS SOLUTIONS. RIP. SIDENOTE: THE BACKBONE SOLUTION WORKED. IT JUST PROVED TO BE TOO LABORIOUS. SO SCREW IT. *****************
 
 
-// var storage = Tabletop.init( { key: omg(), 
-                                   // wait: true } ) 
-
-// var public_spreadsheet_url = 'https://docs.google.com/spreadsheet/pub?key=0AuZMGuR3ulpfdFpGNld2VmZqdk0xR1R4dXpvMUJvZFE&output=html';
-
-// var storage = Tabletop.init( { key: public_spreadsheet_url, 
-                                  // wait: true } )
+//  ******************** START BACKBONE *****************
 
 // CSRF 
  // BackboneRailsAuthTokenAdapter.fixSync(Backbone);
@@ -168,36 +156,25 @@ $(function () {
         \/            \/    \/          \/ 
 */
 
+// $storage = "";
+// $(function() {
+// for (i = 0; i < $result.length; i++) { 
+//     $storage = Tabletop.init( {  
+//     key: $result[i].innerHTML,
+//     wait: true } )
+// }
+// })
+
 // var Assessment = Backbone.Model.extend({
-//   idAttribute: 'coursematerial',
+//   idAttribute: 'rowNumber',
 //   tabletop:  {
-//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',
-//   // instance: 'http://localhost:3000/spreadsheets',
-//   instance: storage,
+//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',    
+//   instance: $storage, 
 //   sheet: 'Students'
 //   },
 //   sync: Backbone.tabletopSync,  
-// })
-
-// var Info = Backbone.Model.extend({
-//   idAttribute: 'info',
-//   tabletop:  {
-//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
-//   instance: storage,
-//   sheet: 'Students'
-//   },
-//   sync: Backbone.tabletopSync
-// })
-
-// var Value = Backbone.Model.extend({
-//   idAttribute: 'value',
-//   tabletop:  {
-//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
-//   instance: storage,
-//   sheet: 'Students'
-//   },
-//   sync: Backbone.tabletopSync
-// })
+// });
+ 
   
 /*
 _________        .__  .__                 __  .__                      
@@ -212,32 +189,13 @@ _________        .__  .__                 __  .__
 //   model: Assessment,
 //   tabletop: {
 //   proxy: 'https://s3.amazonaws.com/google_spreadsheets',  
-//   instance: storage,  
-//   sheet: 'Students'
+//     instance: $storage, 
+//     sheet: 'Students'
 //   },
 //   sync: Backbone.tabletopSync
 // });
 
-// var AssessmentCollection = Backbone.Collection.extend({
-//   model: Info,
-//   tabletop: {
-//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',
-//   instance: storage,  
-//   sheet: 'Students'
-//   },
-//   sync: Backbone.tabletopSync
-// });
 
-// var AssessmentCollection = Backbone.Collection.extend({
-//   model: Value,
-//   tabletop: {
-//   proxy: 'https://s3.amazonaws.com/google_spreadsheets',
-//   instance: storage,  
-//   sheet: 'Students'
-//   },
-//   sync: Backbone.tabletopSync
-// });
-  
 /*
 ____   ____.__                     
 \   \ /   /|__| ______  _  ________
@@ -273,15 +231,39 @@ ____   ____.__
  //  });
 
  //  function showInfo(stuff) {
- //    // var commandline_view = new ListView({ model: stuff.get('Command Line') });
- //    // $("#content").append( commandline_view.render().el );
-
- //   studentname = new Assessment({coursematerial: 'Name'})
- //   studentname.fetch();
- //   info = new Info({info: 'Paris Hyun'})
- //   info.fetch();
- //   value = new Value({value: 'WDI Sept 2013'})
- //   info.fetch();
- //   var heading_view = new ListView({ model: studentname});
+ //    total = new Assessment({'rowNumber': 73})
+ //    total.fetch();
  //   $("#content").append( heading_view.render().el);  
  //  }
+
+// START SIMPLESHEET
+
+// $(function() {
+//     console.log( "ready!" );
+//     init();
+// });
+
+// function init() {
+//   for (i = 0; i < $result.length; i++) { 
+//     Tabletop({ 
+//       key: $result[i].innerHTML,
+//       callback: showInfo,
+//       simpleSheet: true
+//     });
+//   }
+// }
+
+// var count = 0;
+// function showInfo(data, tabletop) {
+//   // data comes through as a simple array since simpleSheet is turned on
+//   var td = document.getElementById('data'),
+//       html = "<p>SHEET " + (++count) + "</p>",
+//       prop, i;
+//   for(i = 0; i < data.length; i++) {
+//     for(prop in data[i]) {
+//       html = html + "&nbsp;&nbsp;" + data[i][prop];
+//     }
+//     html = html + "<hr><br>";
+//   }
+//   td.innerHTML = td.innerHTML + html;
+// }

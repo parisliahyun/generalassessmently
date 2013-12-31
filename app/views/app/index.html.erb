@@ -1,5 +1,5 @@
 <h1>General Assessment.ly</h1>
-<p>Awesomeness will live here.</p>
+<p>May the odds of a stronger, better WDI be ever in your favor.</p>
 
 <input class="btn btn-default" id="overview" type="button" value="Overview" />
 <input class="btn btn-default" id="byweek" type="button" value="By Week" />
@@ -11,6 +11,9 @@
 
 <div id="overviewchart" style="width:100%; height:400px;"></div>
 
+<!-- BELOW IS SIMPLESHEET -->
+
+<p id="overview"></p>
 
 <!-- BELOW IS HANDLEBAR -->
 
@@ -30,17 +33,13 @@
 
 </script>
 
-<script id="overview-template" type="text/x-handlebars-template">
-  <table class="table table-hover table-bordered">
-    <tbody>
-    <tr>
-      <div class="entry">
-        <td>{{value}}</td>
-      </div>
-     <tr> 
-    </tbody>  
-  </table>  
+<!-- BACKBONE TO GRAB HIGHCHART DATA FOR OVERVIEW BAR CHART -->
 
+<script type="text/underscore-template" id="assessment-template" >
+<div class="entry">
+<p>Total Column: <%%= week %></p>
+<p>Value column: <%%= value %></p>
+</div>
 </script>
 
 <!-- BELOW IS SIMPLESHEET -->
@@ -52,15 +51,4 @@
     </tr>
   </table>
 </div> -->
-
-<!-- BELOW IS BACKBONE -->
-
-<!-- // <script type="text/underscore-template" id="assessment-template" > -->
-<!-- //   <div class="entry"
-//   <p>Coursematerial Column: <= coursematerial %></p>
-//   <p>Info Column: <= info %></p>
-//   <p>Value column: <= value %></p>
-//   </div>
-// </script> -->
-
 
