@@ -20,13 +20,22 @@ $(document).ready( function() {
 function init() {  
   for (i = 0; i < $result.length; i++) { 
     Tabletop.init( { key: $result[i].innerHTML,
-                     callback: showInfo,
+                     callback: showInfo1,
                      parseNumbers: true } );
   }
 }
 
-// THE CALLBACK FUNCTION THAT SENDS THE DATA TO THE HANDLEBAR TEMPLATE. 
-function showInfo(data, tabletop) {
+// PROCESS ALL THE SPREADSHEET URLS VIA TABLETOP
+function overviewinit() {  
+  for (i = 0; i < $result.length; i++) { 
+    Tabletop.init( { key: $result[i].innerHTML,
+                     callback: showInfo2,
+                     parseNumbers: true } );
+  }
+}
+
+// THE CALLBACK FUNCTION THAT SENDS THE STUDENT DATA TO THE HANDLEBAR TEMPLATE. 
+function showInfo1(data, tabletop) {
   var source   = $("#spreadsheet-template").html();
   var template = Handlebars.compile(source);
 
@@ -36,7 +45,36 @@ function showInfo(data, tabletop) {
   });
 }
 
+// THE CALLBACK FUNCTION THAT SENDS THE OVERVIEW DATA TO THE HANDLEBAR TEMPLATE. 
+function showInfo2(data, tabletop) {
+  var source   = $("#overview-template").html();
+  var template = Handlebars.compile(source);
 
+  $.each( tabletop.sheets("Students").all(), function(i, spreadsheet) {
+    var html = template(spreadsheet);
+    $("#content").append(html);
+  });
+}
+
+// BY OVERVIEW BUTTON
+// render the graph with weekly breakdown
+$( "#overview" ).click(function() {
+  // alert( "Handler for .click() on overview button called." );
+  overviewinit();
+});
+
+// BY WEEK BUTTON
+// render a page with a list of weeks that link to the drilldowns by topic
+$( "#byweek" ).click(function() {
+  alert( "Handler for .click() on week button called." );
+});
+
+// BY STUDENT BUTTON
+// render a page with a list of students that link to the drilldown per student.
+$( "#bystudent" ).click(function() {
+  alert( "Handler for .click() on student button called." );
+  init();
+});
 
 // ******************** BELOW IS A GRAVEYARD OF PREVIOUS SOLUTIONS. RIP. SIDENOTE: THE BACKBONE SOLUTION WORKED. IT JUST PROVED TO CREATE MORE WORK. SO SCREW IT. *****************
 

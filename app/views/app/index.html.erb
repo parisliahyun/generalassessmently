@@ -1,8 +1,11 @@
 <h1>General Assessment.ly</h1>
 <p>Awesomeness will live here.</p>
 
-<h1>ALL SPREADSHEETS</h1>
-
+<input class="btn btn-success" id="overview" type="button" value="Overview" />
+<input class="btn btn-success" id="byweek" type="button" value="By Week" />
+<input class="btn btn-success" id="bystudent" type="button" value="By Student" />
+<br>
+<br>
 <div id="content"></div>
 
 <!-- BELOW IS HANDLEBAR -->
@@ -13,6 +16,19 @@
     <tr>
       <div class="entry">
         <td>{{coursematerial}}</td>
+        <td>{{value}}</td>
+      </div>
+     <tr> 
+    </tbody>  
+  </table>  
+
+</script>
+
+<script id="overview-template" type="text/x-handlebars-template">
+  <table class="table table-hover table-bordered">
+    <tbody>
+    <tr>
+      <div class="entry">
         <td>{{value}}</td>
       </div>
      <tr> 
