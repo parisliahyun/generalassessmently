@@ -1,4 +1,4 @@
-window.onload = function() { init() };
+// START HANDLEBARS
 
 $result = "";
 $.ajax({ url: 'spreadsheets', 
@@ -8,45 +8,68 @@ $.ajax({ url: 'spreadsheets',
   }   
 });
 
-// omg = function() {
-//   for (i = 0; i < $result.length; i++) { 
-//   console.log("'" + $result[i].innerHTML + "'");   
-//   "'" + $result[i].innerHTML + "'"
-//   }    
-// }  
+$(document).ready( function() {
+  console.log( "ready!" );
+  init();
+});
 
-// var storage = Tabletop.init( { key: omg(), 
-                                   // wait: true } ) 
-
-function init() {
+function init() {  
   for (i = 0; i < $result.length; i++) { 
-    Tabletop({ 
-      key: $result[i].innerHTML,
-      callback: showInfo,
-      simpleSheet: true
-    });
+    Tabletop.init( { key: $result[i].innerHTML,
+                     callback: showInfo,
+                     parseNumbers: true } );
   }
 }
-
-var count = 0;
+  
 function showInfo(data, tabletop) {
-  // data comes through as a simple array since simpleSheet is turned on
-  var div = document.getElementById('data'),
-      html = "<h1>SHEET " + (++count) + "</h1>",
-      prop, i;
-  for(i = 0; i < data.length; i++) {
-    for(prop in data[i]) {
-      html = html + "&nbsp;-&nbsp;" + data[i][prop];
-    }
-    html = html + "<hr><br>";
-  }
-  div.innerHTML = div.innerHTML + html;
+  var source   = $("#spreadsheet-template").html();
+  var template = Handlebars.compile(source);
+
+  $.each( tabletop.sheets("Students").all(), function(i, spreadsheet) {
+    var html = template(spreadsheet);
+    $("#content").append(html);
+  });
 }
 
 
+// START SIMPLESHEET
+
+// $(function() {
+//     console.log( "ready!" );
+//     init();
+// });
+
+// function init() {
+//   for (i = 0; i < $result.length; i++) { 
+//     Tabletop({ 
+//       key: $result[i].innerHTML,
+//       callback: showInfo,
+//       simpleSheet: true
+//     });
+//   }
+// }
+
+// var count = 0;
+// function showInfo(data, tabletop) {
+//   // data comes through as a simple array since simpleSheet is turned on
+//   var td = document.getElementById('data'),
+//       html = "<p>SHEET " + (++count) + "</p>",
+//       prop, i;
+//   for(i = 0; i < data.length; i++) {
+//     for(prop in data[i]) {
+//       html = html + "&nbsp;&nbsp;" + data[i][prop];
+//     }
+//     html = html + "<hr><br>";
+//   }
+//   td.innerHTML = td.innerHTML + html;
+// }
 
 
 // START BACKBONE
+
+
+// var storage = Tabletop.init( { key: omg(), 
+                                   // wait: true } ) 
 
 // var public_spreadsheet_url = 'https://docs.google.com/spreadsheet/pub?key=0AuZMGuR3ulpfdFpGNld2VmZqdk0xR1R4dXpvMUJvZFE&output=html';
 
@@ -182,11 +205,3 @@ ____   ____.__
  //   var heading_view = new ListView({ model: studentname});
  //   $("#content").append( heading_view.render().el);  
  //  }
-
-
-
-
-
-
-
-
