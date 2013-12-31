@@ -1,5 +1,6 @@
-// START HANDLEBARS
+// ******************** START HANDLEBARS *****************
 
+// GRAB THE DATA FROM THE SERVER.
 $result = "";
 $.ajax({ url: 'spreadsheets', 
   cache: false, 
@@ -8,11 +9,14 @@ $.ajax({ url: 'spreadsheets',
   }   
 });
 
+// LOAD ALL SPREADSHEETS WHEN THE DOCUMENT HAS LOADED.
+// This doesn't work. Baaaaaahhhh!!!!
 $(document).ready( function() {
   console.log( "ready!" );
   init();
 });
 
+// PROCESS ALL THE SPREADSHEET URLS VIA TABLETOP
 function init() {  
   for (i = 0; i < $result.length; i++) { 
     Tabletop.init( { key: $result[i].innerHTML,
@@ -20,7 +24,8 @@ function init() {
                      parseNumbers: true } );
   }
 }
-  
+
+// THE CALLBACK FUNCTION THAT SENDS THE DATA TO THE HANDLEBAR TEMPLATE. 
 function showInfo(data, tabletop) {
   var source   = $("#spreadsheet-template").html();
   var template = Handlebars.compile(source);
@@ -31,6 +36,9 @@ function showInfo(data, tabletop) {
   });
 }
 
+
+
+// ******************** BELOW IS A GRAVEYARD OF PREVIOUS SOLUTIONS. RIP. SIDENOTE: THE BACKBONE SOLUTION WORKED. IT JUST PROVED TO CREATE MORE WORK. SO SCREW IT. *****************
 
 // START SIMPLESHEET
 
