@@ -124,6 +124,7 @@ function studentInit() {
     Tabletop.init( { key: $result[i].innerHTML,
                      callback: showInfo1,
                      parseNumbers: true } );
+    console.log("studentInit fired.")
   }
 }
 
@@ -131,10 +132,9 @@ function studentInit() {
 function showInfo1(data, tabletop) {
   var source   = $("#spreadsheet-template").html();
   var template = Handlebars.compile(source);
-
   $.each( tabletop.sheets("Students").all(), function(i, spreadsheet) {
-    var html1 = template(spreadsheet);
-    $("#content").append(html1);
+    var html = template(spreadsheet);
+    $("#content").append(html);
   });
 }
 
@@ -150,17 +150,20 @@ $( "#overview" ).click(function() {
 // 'BY WEEK' BUTTON
 // render a page with a list of weeks that link to the drilldowns by topic
 $( "#byweek" ).click(function() {
-
-  alert( "Handler for .click() on week button called." );
+  console.log( "Handler for .click() on week button called." );
+  var chartContainer = document.querySelector(".chart-container")
+  chartContainer.innerHTML = '';
+  var students = document.getElementById("#content")
+  students.innerHTML = '';
 });
 
 // 'BY STUDENT' BUTTON
 // render a page with a list of students that link to the drilldown per student.
 $( "#bystudent" ).click(function() {
-  var dataContainer = document.querySelector(".data-container")
-  dataContainer.innerHTML = '';
+  var chartContainer = document.querySelector(".chart-container")
+  chartContainer.innerHTML = '';
   studentSearch();
-  // studentInit();
+  studentInit();
 });  
   
 // ******************** END BUTTONS *****************
@@ -179,6 +182,11 @@ function studentSearch() {
 // ******************** BEGIN HIGHCHARTS AND FOR OVERVIEW CHART ***************** 
 
 function overviewChartInit() { 
+  var chartContainer = document.querySelector(".chart-container")
+  var overviewChart = document.createElement('div') 
+  overviewChart.id = "overviewchart"
+  chartContainer.appendChild(overviewChart);
+
   $('#overviewchart').highcharts({
     chart: {
         type: 'bar'
