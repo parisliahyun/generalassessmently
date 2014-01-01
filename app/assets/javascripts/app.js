@@ -16,16 +16,15 @@ $.ajax({ url: 'spreadsheets',
         Tabletop.init( { key: $result[i].innerHTML,
                          callback: showSimple,
                          simpleSheet: true, 
-                         parseNumbers: true } );
+                         parseNumbers: true} );
       }
     }  
-
+ weeklyTotals = ""
 function showSimple(data) {
   // data comes through as a simple array since simpleSheet is turned on
-  alert("Successfully processed " + data.length + " rows!")
-  document.getElementById("overview").innerHTML = "<strong>overview data:</strong> " + [ data[0].week, data[1].week, data[2].week ].join(", ");
-  $allthis = $(data)
-  console.log(data);
+  weeklyTotals = data
+  console.log(weeklyTotals[66].value, weeklyTotals[90].value, weeklyTotals[133].value, weeklyTotals[167].value, weeklyTotals[178].value, weeklyTotals[218].value, weeklyTotals[241].value, weeklyTotals[257].value, weeklyTotals[306].value);
+  
 }
 
 // *********** END SIMPLESHEET ***********************
@@ -81,11 +80,6 @@ function showInfo2(data, tabletop) {
 
 // BUTTONS 
 
-// 'OVERVIEW' BUTTON
-// render the graph with weekly breakdown
-$( "#overview" ).click(function() {
-  // alert( "Handler for .click() on overview button called." );
-
 // 'BY WEEK' BUTTON
 // render a page with a list of weeks that link to the drilldowns by topic
 $( "#byweek" ).click(function() {
@@ -102,6 +96,8 @@ $( "#bystudent" ).click(function() {
 
   // ******************** BEGIN HIGHCHARTS FOR OVERVIEW ***************** 
 
+// 'OVERVIEW' BUTTON
+$( "#overview" ).click(function() {
   $(function () { 
       $('#overviewchart').highcharts({
           chart: {
@@ -120,7 +116,7 @@ $( "#bystudent" ).click(function() {
           },
           series: [{
               name: 'FALL 2013 WDI',
-              data: [600, 780, 1024, 1050, 600, 850, 901, 880, 587]
+              data: [weeklyTotals[66].value, 780, 1024, 1050, 600, 850, 901, 880, 587]
           }]
       });
   });
