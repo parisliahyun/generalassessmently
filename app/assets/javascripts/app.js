@@ -31,9 +31,21 @@ function init() {
   week8 = []
   week910 = []
 
+  weeklyMaxTotals = ""
+  week1Max = []
+  week2Max = []
+  week3Max = []
+  week4Max = []
+  week5Max = []
+  week6Max = []
+  week7Max = []
+  week8Max = []
+  week910Max = []
+
   function showInfo(data) {
   // data comes through as a simple array since simpleSheet is turned on
   weeklyTotals = data
+  weeklyMaxTotals = data
   console.log(weeklyTotals[66].value, weeklyTotals[90].value, weeklyTotals[133].value, weeklyTotals[167].value, weeklyTotals[178].value, weeklyTotals[218].value, weeklyTotals[241].value, weeklyTotals[257].value, weeklyTotals[306].value);
 
   week1.push(weeklyTotals[66].value)
@@ -45,6 +57,16 @@ function init() {
   week7.push(weeklyTotals[241].value)
   week8.push(weeklyTotals[257].value)
   week910.push(weeklyTotals[306].value)
+
+  week1Max.push(weeklyMaxTotals[66].maxpoints)
+  week2Max.push(weeklyMaxTotals[90].maxpoints)
+  week3Max.push(weeklyMaxTotals[133].maxpoints)
+  week4Max.push(weeklyMaxTotals[167].maxpoints)
+  week5Max.push(weeklyMaxTotals[178].maxpoints)
+  week6Max.push(weeklyMaxTotals[218].maxpoints)
+  week7Max.push(weeklyMaxTotals[241].maxpoints)
+  week8Max.push(weeklyMaxTotals[257].maxpoints)
+  week910Max.push(weeklyMaxTotals[306].maxpoints)
 
   week1Total=0;
   for(var i in week1) { week1Total += week1[i]; }
@@ -64,6 +86,26 @@ function init() {
   for(var i in week8) { week8Total += week8[i]; }
   week910Total=0;
   for(var i in week910) { week910Total += week910[i]; }
+
+
+  week1MaxTotal=0;
+  for(var i in week1Max) { week1MaxTotal += week1Max[i]; }
+  week2MaxTotal=0;
+  for(var i in week2Max) { week2MaxTotal += week2Max[i]; }
+  week3MaxTotal=0;
+  for(var i in week3Max) { week3MaxTotal += week3Max[i]; }
+  week4MaxTotal=0;
+  for(var i in week4Max) { week4MaxTotal += week4Max[i]; }
+  week5MaxTotal=0;
+  for(var i in week5Max) { week5MaxTotal += week5Max[i]; }
+  week6MaxTotal=0;
+  for(var i in week6Max) { week6MaxTotal += week6Max[i]; }
+  week7MaxTotal=0;
+  for(var i in week7Max) { week7MaxTotal += week7Max[i]; }
+  week8MaxTotal=0;
+  for(var i in week8Max) { week8MaxTotal += week8Max[i]; }
+  week910MaxTotal=0;
+  for(var i in week910Max) { week910MaxTotal += week910Max[i]; }  
 
 }
 
@@ -132,14 +174,12 @@ function overviewChartInit() {
             text: 'SELF-ASSESSMENT SCORES ACROSS ALL STUDENTS'
         }
     },
-       plotOptions: {
-      series: {
-          stacking: 'normal'
-      }
-    },
     series: [{
-        name: 'FALL 2013 WDI',
-          data: [week1Total, week2Total, week3Total, week4Total, week5Total, week6Total, week7Total, week8Total, week910Total]
+      name: 'STUDENT ASSESSMENTS POINTS',
+        data: [week1Total, week2Total, week3Total, week4Total, week5Total, week6Total, week7Total, week8Total, week910Total]
+      }, {
+      name: 'MAXIMUM ASSESSMENT POINTS',
+        data: [week1MaxTotal, week2MaxTotal, week3MaxTotal, week4MaxTotal, week5MaxTotal, week6MaxTotal, week7MaxTotal, week8MaxTotal, week910MaxTotal]
     }]
   });
 };
