@@ -9,7 +9,7 @@ $.ajax({ url: 'spreadsheets',
   }   
 });
 
-// *********** START SIMPLESHEET EXPERIMENTING ***********************
+// *********** START SIMPLESHEET FOR HIGHCHARTS ***********************
 
  function simple() {
         for (i = 0; i < $result.length; i++) { 
@@ -19,12 +19,50 @@ $.ajax({ url: 'spreadsheets',
                          parseNumbers: true} );
       }
     }  
- weeklyTotals = ""
+weeklyTotals = ""
+week1 = []
+week2 = []
+week3 = []
+week4 = []
+week5 = []
+week6 = []
+week7 = []
+week8 = []
+week910 = []
 function showSimple(data) {
   // data comes through as a simple array since simpleSheet is turned on
   weeklyTotals = data
   console.log(weeklyTotals[66].value, weeklyTotals[90].value, weeklyTotals[133].value, weeklyTotals[167].value, weeklyTotals[178].value, weeklyTotals[218].value, weeklyTotals[241].value, weeklyTotals[257].value, weeklyTotals[306].value);
-  
+
+  week1.push(weeklyTotals[66].value)
+  week2.push(weeklyTotals[90].value)
+  week3.push(weeklyTotals[133].value)
+  week4.push(weeklyTotals[167].value)
+  week5.push(weeklyTotals[178].value)
+  week6.push(weeklyTotals[218].value)
+  week7.push(weeklyTotals[241].value)
+  week8.push(weeklyTotals[257].value)
+  week910.push(weeklyTotals[306].value)
+
+  week1Total=0;
+  for(var i in week1) { week1Total += week1[i]; }
+  week2Total=0;
+  for(var i in week2) { week2Total += week2[i]; }
+  week3Total=0;
+  for(var i in week3) { week3Total += week3[i]; }
+  week4Total=0;
+  for(var i in week4) { week4Total += week4[i]; }
+  week5Total=0;
+  for(var i in week5) { week5Total += week5[i]; }
+  week6Total=0;
+  for(var i in week6) { week6Total += week6[i]; }
+  week7Total=0;
+  for(var i in week7) { week7Total += week7[i]; }
+  week8Total=0;
+  for(var i in week8) { week8Total += week8[i]; }
+  week910Total=0;
+  for(var i in week910) { week910Total += week910[i]; }
+
 }
 
 // *********** END SIMPLESHEET ***********************
@@ -94,7 +132,7 @@ $( "#bystudent" ).click(function() {
 });  
   
 
-  // ******************** BEGIN HIGHCHARTS FOR OVERVIEW ***************** 
+  // ******************** BEGIN HIGHCHARTS AND BUTTON FOR OVERVIEW ***************** 
 
 // 'OVERVIEW' BUTTON
 $( "#overview" ).click(function() {
@@ -114,9 +152,14 @@ $( "#overview" ).click(function() {
                   text: 'SELF-ASSESSMENT SCORES ACROSS ALL STUDENTS'
               }
           },
+             plotOptions: {
+            series: {
+                stacking: 'normal'
+            }
+          },
           series: [{
               name: 'FALL 2013 WDI',
-              data: [weeklyTotals[66].value, 780, 1024, 1050, 600, 850, 901, 880, 587]
+                data: [week1Total, week2Total, week3Total, week4Total, week5Total, week6Total, week7Total, week8Total, week910Total]
           }]
       });
   });
