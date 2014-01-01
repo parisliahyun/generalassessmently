@@ -1,6 +1,5 @@
-// ******************** START HANDLEBARS  *****************
-
 // GRAB THE DATA FROM THE SERVER.
+ 
 $result = "";
 $.ajax({ url: 'spreadsheets', 
   cache: false, 
@@ -11,14 +10,15 @@ $.ajax({ url: 'spreadsheets',
 
 // *********** START SIMPLESHEET FOR HIGHCHARTS ***********************
 
- function simple() {
-        for (i = 0; i < $result.length; i++) { 
-        Tabletop.init( { key: $result[i].innerHTML,
-                         callback: showSimple,
-                         simpleSheet: true, 
-                         parseNumbers: true} );
-      }
-    }  
+function simple() {
+  for (i = 0; i < $result.length; i++) { 
+  Tabletop.init( { key: $result[i].innerHTML,
+                   callback: showSimple,
+                   simpleSheet: true, 
+                   parseNumbers: true} );
+  }
+}
+
 weeklyTotals = ""
 week1 = []
 week2 = []
@@ -29,6 +29,7 @@ week6 = []
 week7 = []
 week8 = []
 week910 = []
+
 function showSimple(data) {
   // data comes through as a simple array since simpleSheet is turned on
   weeklyTotals = data
@@ -67,12 +68,7 @@ function showSimple(data) {
 
 // *********** END SIMPLESHEET ***********************
 
-// LOAD ALL SPREADSHEETS WHEN THE DOCUMENT HAS LOADED.
-// This doesn't work. Baaaaaahhhh!!!!
-$(document).ready( function() {
-  console.log( "ready!" );
-  init();
-});
+// ******************** START HANDLEBARS  *****************
 
 // PROCESS ALL THE SPREADSHEET URLS VIA TABLETOP
 function init() {  
@@ -135,36 +131,39 @@ $( "#bystudent" ).click(function() {
   // ******************** BEGIN HIGHCHARTS AND BUTTON FOR OVERVIEW ***************** 
 
 // 'OVERVIEW' BUTTON
-$( "#overview" ).click(function() {
-  $(function () { 
-      $('#overviewchart').highcharts({
-          chart: {
-              type: 'bar'
-          },
-          title: {
-              text: 'FALL 2013 WDI OVERVIEW'
-          },
-          xAxis: {
-              categories: ['WEEK 1', 'WEEK 2', 'WEEK 3', 'WEEK 4', 'WEEK 5', 'WEEK 6', 'WEEK 7', 'WEEK 8', 'WEEK 9 & 10']
-          },
-          yAxis: {
-              title: {
-                  text: 'SELF-ASSESSMENT SCORES ACROSS ALL STUDENTS'
-              }
-          },
-             plotOptions: {
-            series: {
-                stacking: 'normal'
-            }
-          },
-          series: [{
-              name: 'FALL 2013 WDI',
-                data: [week1Total, week2Total, week3Total, week4Total, week5Total, week6Total, week7Total, week8Total, week910Total]
-          }]
-      });
-  });
 
+$( "#overview" ).click(function() {
+  $(function overviewChartInit() { 
+  $('#overviewchart').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'FALL 2013 WDI OVERVIEW'
+        },
+        xAxis: {
+            categories: ['WEEK 1', 'WEEK 2', 'WEEK 3', 'WEEK 4', 'WEEK 5', 'WEEK 6', 'WEEK 7', 'WEEK 8', 'WEEK 9 & 10']
+        },
+        yAxis: {
+            title: {
+                text: 'SELF-ASSESSMENT SCORES ACROSS ALL STUDENTS'
+            }
+        },
+           plotOptions: {
+          series: {
+              stacking: 'normal'
+          }
+        },
+        series: [{
+            name: 'FALL 2013 WDI',
+              data: [week1Total, week2Total, week3Total, week4Total, week5Total, week6Total, week7Total, week8Total, week910Total]
+        }]
+    });
+  });
 });
+
+// LOAD ALL SPREADSHEETS WHEN THE DOCUMENT HAS LOADED.
+// This doesn't work. Baaaaaahhhh!!!!
 
 // document.observe("dom:loaded", function() {
 //    var chart1 = new Highcharts.Chart({
