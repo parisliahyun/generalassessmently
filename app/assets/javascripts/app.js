@@ -9,7 +9,7 @@ $.ajax({ url: 'spreadsheets',
   }   
 });
 
-// *********** START SIMPLESHEET FOR HIGHCHARTS ***********************
+// *********** START TABLETOP SIMPLESHEET FOR HIGHCHARTS ***********************
 
 function init() {
   for (i = 0; i < $result.length; i++) { 
@@ -19,6 +19,8 @@ function init() {
                    parseNumbers: true} );
   }
 };
+
+// *********** SETTING UP VARIABLES FOR OVERVIEW DATA ***********************
 
   weeklyTotals = ""
   week1 = []
@@ -42,11 +44,16 @@ function init() {
   week8Max = []
   week910Max = []
 
+// *********** END VARIABLES FOR OVERVIEW DATA ***********************
+
+// The call back function to render the data from tabletop for overview chart
   function showInfo(data) {
   // data comes through as a simple array since simpleSheet is turned on
   weeklyTotals = data
   weeklyMaxTotals = data
   console.log(weeklyTotals[66].value, weeklyTotals[90].value, weeklyTotals[133].value, weeklyTotals[167].value, weeklyTotals[178].value, weeklyTotals[218].value, weeklyTotals[241].value, weeklyTotals[257].value, weeklyTotals[306].value);
+
+ // *********** GRABBING OVERVIEW DATA FROM SPREADSHEETS ***********************
 
   week1.push(weeklyTotals[66].value)
   week2.push(weeklyTotals[90].value)
@@ -87,7 +94,6 @@ function init() {
   week910Total=0;
   for(var i in week910) { week910Total += week910[i]; }
 
-
   week1MaxTotal=0;
   for(var i in week1Max) { week1MaxTotal += week1Max[i]; }
   week2MaxTotal=0;
@@ -106,12 +112,11 @@ function init() {
   for(var i in week8Max) { week8MaxTotal += week8Max[i]; }
   week910MaxTotal=0;
   for(var i in week910Max) { week910MaxTotal += week910Max[i]; }  
-
 }
 
-// *********** END SIMPLESHEET ***********************
+// *********** END TABLETOP SIMPLESHEET ***********************
 
-// ******************** START HANDLEBARS  *****************
+// ******************** START HANDLEBARS FOR 'PER STUDENT' VIEWS *****************
 
 // PROCESS ALL THE SPREADSHEET URLS FOR 'STUDENT' VIEW.
 function studentInit() {  
@@ -122,7 +127,7 @@ function studentInit() {
   }
 }
 
-// THE CALLBACK FUNCTION TO RENDER THE 'STUDENT' HANDLEBAR TEMPLATE. 
+// THE CALLBACK FUNCTION TO RENDER THE 'PER STUDENT' HANDLEBAR TEMPLATE. 
 function showInfo1(data, tabletop) {
   var source   = $("#spreadsheet-template").html();
   var template = Handlebars.compile(source);
@@ -133,9 +138,9 @@ function showInfo1(data, tabletop) {
   });
 }
 
-// ******************** END HANDLEBARS   *****************
+// ******************** END HANDLEBARS *****************
 
-// BUTTONS 
+// ******************** BUTTONS *****************
 
 // 'OVERVIEW' BUTTON
 $( "#overview" ).click(function() {
@@ -145,18 +150,33 @@ $( "#overview" ).click(function() {
 // 'BY WEEK' BUTTON
 // render a page with a list of weeks that link to the drilldowns by topic
 $( "#byweek" ).click(function() {
+
   alert( "Handler for .click() on week button called." );
 });
 
 // 'BY STUDENT' BUTTON
 // render a page with a list of students that link to the drilldown per student.
 $( "#bystudent" ).click(function() {
-  alert( "Handler for .click() on student button called." );
-  init();
+  var dataContainer = document.querySelector(".data-container")
+  dataContainer.innerHTML = '';
+  studentSearch();
+  // studentInit();
 });  
   
+// ******************** END BUTTONS *****************
 
-  // ******************** BEGIN HIGHCHARTS AND BUTTON FOR OVERVIEW ***************** 
+// ******************** BEGIN STUDENT SEARCH *****************
+
+function studentSearch() {
+
+// delete what comes before and...
+// append search bar
+
+}
+
+// ******************** END STUDENT SEARCH *****************
+
+// ******************** BEGIN HIGHCHARTS AND FOR OVERVIEW CHART ***************** 
 
 function overviewChartInit() { 
   $('#overviewchart').highcharts({
@@ -184,10 +204,10 @@ function overviewChartInit() {
   });
 };
 
-// ******************** END HIGHCHARTS FOR OVERVIEW *****************
+// ******************** END HIGHCHARTS FOR OVERVIEW CHART *****************
 
 // LOAD ALL SPREADSHEETS WHEN THE DOCUMENT HAS LOADED.
 window.onload = function() { 
-  init(); 
+  // init(); 
   console.log("happy new year."); 
 };
