@@ -23,94 +23,45 @@ function init() {
 // *********** SETTING UP VARIABLES FOR OVERVIEW DATA ***********************
 
   weeklyTotals = ""
-  week1 = []
-  week2 = []
-  week3 = []
-  week4 = []
-  week5 = []
-  week6 = []
-  week7 = []
-  week8 = []
-  week910 = []
-
   weeklyMaxTotals = ""
-  week1Max = []
-  week2Max = []
-  week3Max = []
-  week4Max = []
-  week5Max = []
-  week6Max = []
-  week7Max = []
-  week8Max = []
-  week910Max = []
-
+  all = []
+  weekly = 0;
+  reducedTotals = []
+  reducedMaxTotals = []
+  weekname = 0
+  allWeeks = []
+  
 // *********** END VARIABLES FOR OVERVIEW DATA ***********************
 
+
+// *********** BEGIN CALLBACK FUNCTION FOR TABLETOP SIMPLESHEET ***********************
 // The call back function to render the data from tabletop for overview chart
   function showInfo(data) {
-  // data comes through as a simple array since simpleSheet is turned on
   weeklyTotals = data
-  console.log(weeklyTotals[66].value, weeklyTotals[90].value, weeklyTotals[133].value, weeklyTotals[167].value, weeklyTotals[178].value, weeklyTotals[218].value, weeklyTotals[241].value, weeklyTotals[257].value, weeklyTotals[306].value);
+  // find all hashes that contain totals and put them in an array
+  weekly = _.where(weeklyTotals, {week: "weektotal"}) 
+  all.push(weekly) 
+  // pluck just the values into a nested array FOR STUDENTS
+  listofValues = []
+  for (i in all) {listofValues.push(_.pluck(all[i], "value"))};
+  console.log(listofValues)
+  // combine the totals from each spreadsheet
+  studentTotalsFromAllSpreadsheets = _.zip.apply([], listofValues)
+  reducedTotals = []
+  for (i in studentTotalsFromAllSpreadsheets) {reducedTotals.push(_.reduce(studentTotalsFromAllSpreadsheets[i], function(memo, num){ return memo + num; }, 0))};
 
- // *********** GRABBING OVERVIEW DATA FROM SPREADSHEETS ***********************
+  // pluck just the values into a nested array FOR MAX POINTS
+  listofMaxValues = []   
+  for (i in all) {listofMaxValues.push(_.pluck(all[i], "maxpoints"))};
+  maxTotalsFromAllSpreadsheets = _.zip.apply([], listofMaxValues)
+  reducedMaxTotals = []
+  for (i in maxTotalsFromAllSpreadsheets) {reducedMaxTotals.push(_.reduce(maxTotalsFromAllSpreadsheets[i], function(memo, num){ return memo + num; }, 0))};
 
-  week1.push(weeklyTotals[66].value)
-  week2.push(weeklyTotals[90].value)
-  week3.push(weeklyTotals[133].value)
-  week4.push(weeklyTotals[167].value)
-  week5.push(weeklyTotals[178].value)
-  week6.push(weeklyTotals[218].value)
-  week7.push(weeklyTotals[241].value)
-  week8.push(weeklyTotals[257].value)
-  week910.push(weeklyTotals[306].value)
-
-  week1Max.push(weeklyTotals[66].maxpoints)
-  week2Max.push(weeklyTotals[90].maxpoints)
-  week3Max.push(weeklyTotals[133].maxpoints)
-  week4Max.push(weeklyTotals[167].maxpoints)
-  week5Max.push(weeklyTotals[178].maxpoints)
-  week6Max.push(weeklyTotals[218].maxpoints)
-  week7Max.push(weeklyTotals[241].maxpoints)
-  week8Max.push(weeklyTotals[257].maxpoints)
-  week910Max.push(weeklyTotals[306].maxpoints)
-
-  week1Total=0;
-  for(var i in week1) { week1Total += week1[i]; }
-  week2Total=0;
-  for(var i in week2) { week2Total += week2[i]; }
-  week3Total=0;
-  for(var i in week3) { week3Total += week3[i]; }
-  week4Total=0;
-  for(var i in week4) { week4Total += week4[i]; }
-  week5Total=0;
-  for(var i in week5) { week5Total += week5[i]; }
-  week6Total=0;
-  for(var i in week6) { week6Total += week6[i]; }
-  week7Total=0;
-  for(var i in week7) { week7Total += week7[i]; }
-  week8Total=0;
-  for(var i in week8) { week8Total += week8[i]; }
-  week910Total=0;
-  for(var i in week910) { week910Total += week910[i]; }
-
-  week1MaxTotal=0;
-  for(var i in week1Max) { week1MaxTotal += week1Max[i]; }
-  week2MaxTotal=0;
-  for(var i in week2Max) { week2MaxTotal += week2Max[i]; }
-  week3MaxTotal=0;
-  for(var i in week3Max) { week3MaxTotal += week3Max[i]; }
-  week4MaxTotal=0;
-  for(var i in week4Max) { week4MaxTotal += week4Max[i]; }
-  week5MaxTotal=0;
-  for(var i in week5Max) { week5MaxTotal += week5Max[i]; }
-  week6MaxTotal=0;
-  for(var i in week6Max) { week6MaxTotal += week6Max[i]; }
-  week7MaxTotal=0;
-  for(var i in week7Max) { week7MaxTotal += week7Max[i]; }
-  week8MaxTotal=0;
-  for(var i in week8Max) { week8MaxTotal += week8Max[i]; }
-  week910MaxTotal=0;
-  for(var i in week910Max) { week910MaxTotal += week910Max[i]; }  
+  // Grab the weekname for the x Axis of highcharts
+  weekname = _.where(weeklyTotals, {week: "weekname"})  
+  allWeeks.push(weekname)
+  listofWeeks = []
+  for (i in allWeeks) {listofWeeks.push(_.pluck(allWeeks[i], "coursematerial"))};
 }
 
 // *********** END TABLETOP SIMPLESHEET ***********************
@@ -197,7 +148,7 @@ function overviewChartInit() {
         text: 'FALL 2013 WDI OVERVIEW'
     },
     xAxis: {
-        categories: ['WEEK 1', 'WEEK 2', 'WEEK 3', 'WEEK 4', 'WEEK 5', 'WEEK 6', 'WEEK 7', 'WEEK 8', 'WEEK 9 & 10']
+        categories: listofWeeks[0]
     },
     yAxis: {
         title: {
@@ -206,10 +157,10 @@ function overviewChartInit() {
     },
     series: [{
       name: 'STUDENT ASSESSMENT POINTS',
-        data: [week1Total, week2Total, week3Total, week4Total, week5Total, week6Total, week7Total, week8Total, week910Total]
+        data: reducedTotals
       }, {
       name: 'MAXIMUM ASSESSMENT POINTS',
-        data: [week1MaxTotal, week2MaxTotal, week3MaxTotal, week4MaxTotal, week5MaxTotal, week6MaxTotal, week7MaxTotal, week8MaxTotal, week910MaxTotal]
+        data: reducedMaxTotals
     }]
   });
 };
@@ -219,11 +170,9 @@ function overviewChartInit() {
 // ******************** BEGIN HIGHCHARTS FOR WEEK VIEW *****************
 
 range1 = _.range(3, 66, 1);
-topics = _.map(range1, function(num){ return "weeklyTotals["+num+"].coursematerial"; })
-week1values = _.map(range1, function(num){ return "weeklyTotals["+num+"].value"; })
-week1max = _.map(range1, function(num){ return "weeklyTotals["+num+"].maxpoints"; })
-
-totalWeekly = {}
+topicize = _.map(range1, function(num){ return "weeklyTotals["+num+"].coursematerial"; })
+week1valueize = _.map(range1, function(num){ return "weeklyTotals["+num+"].value"; })
+// totalWeek1Values = _.object(topics, week1values)
 
 function weekChartInit() { 
   var chartContainer = document.querySelector(".chart-container")
@@ -245,7 +194,7 @@ function weekChartInit() {
         text: 'FALL 2013 WDI: WEEK #'
     },
     xAxis: {
-        categories: _.map(topics, function(num){ return eval(num); })
+        categories: _.map(topicize, function(num){ return eval(num); })
     },
     yAxis: {
       allowDecimals: false,
@@ -256,7 +205,7 @@ function weekChartInit() {
     },
     series: [{
       name: 'STUDENT ASSESSMENT POINTS',
-        data: _.map(week1values, function(num){ return eval(num); })
+        data: _.map(week1valueize, function(num){ return eval(num); })
       }]
   });
 };
