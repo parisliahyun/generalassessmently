@@ -50,7 +50,6 @@ function init() {
   function showInfo(data) {
   // data comes through as a simple array since simpleSheet is turned on
   weeklyTotals = data
-  weeklyMaxTotals = data
   console.log(weeklyTotals[66].value, weeklyTotals[90].value, weeklyTotals[133].value, weeklyTotals[167].value, weeklyTotals[178].value, weeklyTotals[218].value, weeklyTotals[241].value, weeklyTotals[257].value, weeklyTotals[306].value);
 
  // *********** GRABBING OVERVIEW DATA FROM SPREADSHEETS ***********************
@@ -65,15 +64,15 @@ function init() {
   week8.push(weeklyTotals[257].value)
   week910.push(weeklyTotals[306].value)
 
-  week1Max.push(weeklyMaxTotals[66].maxpoints)
-  week2Max.push(weeklyMaxTotals[90].maxpoints)
-  week3Max.push(weeklyMaxTotals[133].maxpoints)
-  week4Max.push(weeklyMaxTotals[167].maxpoints)
-  week5Max.push(weeklyMaxTotals[178].maxpoints)
-  week6Max.push(weeklyMaxTotals[218].maxpoints)
-  week7Max.push(weeklyMaxTotals[241].maxpoints)
-  week8Max.push(weeklyMaxTotals[257].maxpoints)
-  week910Max.push(weeklyMaxTotals[306].maxpoints)
+  week1Max.push(weeklyTotals[66].maxpoints)
+  week2Max.push(weeklyTotals[90].maxpoints)
+  week3Max.push(weeklyTotals[133].maxpoints)
+  week4Max.push(weeklyTotals[167].maxpoints)
+  week5Max.push(weeklyTotals[178].maxpoints)
+  week6Max.push(weeklyTotals[218].maxpoints)
+  week7Max.push(weeklyTotals[241].maxpoints)
+  week8Max.push(weeklyTotals[257].maxpoints)
+  week910Max.push(weeklyTotals[306].maxpoints)
 
   week1Total=0;
   for(var i in week1) { week1Total += week1[i]; }
@@ -124,7 +123,7 @@ function studentInit() {
     Tabletop.init( { key: $result[i].innerHTML,
                      callback: showInfo1,
                      parseNumbers: true } );
-    console.log("studentInit fired.")
+    console.log("Sweet libs 4 life.")
   }
 }
 
@@ -144,17 +143,22 @@ function showInfo1(data, tabletop) {
 
 // 'OVERVIEW' BUTTON
 $( "#overview" ).click(function() {
+  var chartContainer = document.querySelector(".chart-container")
+  chartContainer.innerHTML = '';
+  var students = document.querySelector("#content")
+  students.innerHTML = '';
   overviewChartInit();
 });
 
 // 'BY WEEK' BUTTON
 // render a page with a list of weeks that link to the drilldowns by topic
 $( "#byweek" ).click(function() {
-  console.log( "Handler for .click() on week button called." );
+  console.log( "Love is a battlefield." );
   var chartContainer = document.querySelector(".chart-container")
   chartContainer.innerHTML = '';
-  var students = document.getElementById("#content")
+  var students = document.querySelector("#content")
   students.innerHTML = '';
+  weekChartInit() 
 });
 
 // 'BY STUDENT' BUTTON
@@ -171,15 +175,13 @@ $( "#bystudent" ).click(function() {
 // ******************** BEGIN STUDENT SEARCH *****************
 
 function studentSearch() {
-
-// delete what comes before and...
 // append search bar
 
 }
 
 // ******************** END STUDENT SEARCH *****************
 
-// ******************** BEGIN HIGHCHARTS AND FOR OVERVIEW CHART ***************** 
+// ******************** BEGIN HIGHCHARTS FOR OVERVIEW ***************** 
 
 function overviewChartInit() { 
   var chartContainer = document.querySelector(".chart-container")
@@ -203,7 +205,7 @@ function overviewChartInit() {
         }
     },
     series: [{
-      name: 'STUDENT ASSESSMENTS POINTS',
+      name: 'STUDENT ASSESSMENT POINTS',
         data: [week1Total, week2Total, week3Total, week4Total, week5Total, week6Total, week7Total, week8Total, week910Total]
       }, {
       name: 'MAXIMUM ASSESSMENT POINTS',
@@ -212,9 +214,55 @@ function overviewChartInit() {
   });
 };
 
-// ******************** END HIGHCHARTS FOR OVERVIEW CHART *****************
+// ******************** END HIGHCHARTS FOR OVERVIEW *****************
 
-// LOAD ALL SPREADSHEETS WHEN THE DOCUMENT HAS LOADED.
+// ******************** BEGIN HIGHCHARTS FOR WEEK VIEW *****************
+
+range1 = _.range(3, 66, 1);
+topics = _.map(range1, function(num){ return "weeklyTotals["+num+"].coursematerial"; })
+week1values = _.map(range1, function(num){ return "weeklyTotals["+num+"].value"; })
+week1max = _.map(range1, function(num){ return "weeklyTotals["+num+"].maxpoints"; })
+
+totalWeekly = {}
+
+function weekChartInit() { 
+  var chartContainer = document.querySelector(".chart-container")
+  var weekChart = document.createElement('div') 
+  weekChart.id = "weekchart"
+  chartContainer.appendChild(weekChart);
+
+  $('#weekchart').highcharts({
+    // legend: {
+    //   layout: 'vertical',
+    //   verticalAlign: 'top',
+    //   floating: true,
+    // },
+    chart: {
+        marginLeft: 320,
+        type: 'bar'
+    },
+    title: {
+        text: 'FALL 2013 WDI: WEEK #'
+    },
+    xAxis: {
+        categories: _.map(topics, function(num){ return eval(num); })
+    },
+    yAxis: {
+      allowDecimals: false,
+      opposite: true,
+        title: {
+            text: 'SCORES PER TOPIC ACROSS ALL STUDENTS'
+        }
+    },
+    series: [{
+      name: 'STUDENT ASSESSMENT POINTS',
+        data: _.map(week1values, function(num){ return eval(num); })
+      }]
+  });
+};
+
+// ******************** END HIGHCHARTS FOR WEEK VIEW *****************
+
 window.onload = function() { 
   // init(); 
   console.log("happy new year."); 
