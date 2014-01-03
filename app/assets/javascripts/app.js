@@ -20,7 +20,7 @@ function init() {
   }
 };
 
-// *********** SETTING UP VARIABLES FOR OVERVIEW DATA ***********************
+// *********** SETTING UP VARIABLES FOR CHARTS ***********************
 
   weeklyTotals = ""
   weeklyMaxTotals = ""
@@ -29,19 +29,21 @@ function init() {
   reducedMaxTotals = []
   allWeeks = []
   allWeek1Scores = []
- 
   
-// *********** END VARIABLES FOR OVERVIEW DATA ***********************
+// *********** END VARIABLES FOR CHARTS ***********************
 
 
 // *********** BEGIN CALLBACK FUNCTION FOR TABLETOP SIMPLESHEET ***********************
-// The call back function to render the data from tabletop for overview chart
+
   function showInfo(data) {
   weeklyTotals = data
+
+  // *********** FOR OVERVIEW CHART ***********
+  // Y AXIS
   // find all hashes that contain totals and put them in an array
   weekly = _.where(weeklyTotals, {week: "weektotal"}) 
   all.push(weekly) 
-  // pluck just the values into a nested array FOR STUDENTS
+  // pluck from the 'value' column FOR STUDENT TOTALS
   listofValues = []
   for (i in all) {listofValues.push(_.pluck(all[i], "value"))};
   console.log(listofValues)
@@ -50,20 +52,23 @@ function init() {
   reducedTotals = []
   for (i in studentTotalsFromAllSpreadsheets) {reducedTotals.push(_.reduce(studentTotalsFromAllSpreadsheets[i], function(memo, num){ return memo + num; }, 0))};
 
-  // pluck just the values into a nested array FOR MAX POINTS
+  // pluck from the 'maxpoints' column FOR MAX POINT TOTALS
   listofMaxValues = []   
   for (i in all) {listofMaxValues.push(_.pluck(all[i], "maxpoints"))};
   maxTotalsFromAllSpreadsheets = _.zip.apply([], listofMaxValues)
   reducedMaxTotals = []
   for (i in maxTotalsFromAllSpreadsheets) {reducedMaxTotals.push(_.reduce(maxTotalsFromAllSpreadsheets[i], function(memo, num){ return memo + num; }, 0))};
 
-  // Grab the weekname for the x Axis of highcharts
+  // X AXIS
   weekname = _.where(weeklyTotals, {week: "weekname"})  
   allWeeks.push(weekname)
   listofWeeks = []
   for (i in allWeeks) {listofWeeks.push(_.pluck(allWeeks[i], "coursematerial"))};
 
-  // ************ GRAB DATA FOR WEEKLY CHART ***********************
+  // ************ FOR WEEK CHART *********** 
+  // TITLE
+  weekChartTitle = _.where(weeklyTotals, {coursematerial: "Instance:"})  
+  weekChartTitle = _.pluck(weekChartTitle, 'value'); 
   // X AXIS
   week1Rows = _.where(weeklyTotals, {week: 1})  
   week1Topics = []
@@ -123,6 +128,27 @@ $( "#byweek" ).click(function() {
   chartContainer.innerHTML = '';
   var students = document.querySelector("#content")
   students.innerHTML = '';
+
+  // append week selector
+  var chartContainer = document.querySelector(".chart-container");
+  var weekDiv = document.createElement('div')
+  weekDiv.id = "weekdiv"
+  chartContainer.parentNode.insertBefore(weekDiv, chartContainer);
+  var weekSelect = document.createElement('select');
+  weekSelect.id = "weekSelect";
+  weekDiv.appendChild(weekSelect);
+  var weekChart = document.createElement('div'); 
+  weekChart.id = "weekchart";
+  chartContainer.appendChild(weekChart);
+  
+
+  for (var i = 0; i < listofWeeks[0].length; i++) {
+    var weekOptions = document.createElement('option');
+    weekOptions.id = "weekOptions";
+    weekOptions.textContent = listofWeeks[0][i];
+    weekSelect.appendChild(weekOptions);
+  }
+
   weekChartInit() 
 });
 
@@ -131,6 +157,8 @@ $( "#byweek" ).click(function() {
 $( "#bystudent" ).click(function() {
   var chartContainer = document.querySelector(".chart-container")
   chartContainer.innerHTML = '';
+  var weekButton = document.querySelector("#byweek")
+  weekButton.innerHTML = '';
   studentSearch();
   studentInit();
 });  
@@ -184,23 +212,14 @@ function overviewChartInit() {
 // ******************** BEGIN HIGHCHARTS FOR WEEK VIEW *****************
 
 function weekChartInit() { 
-  var chartContainer = document.querySelector(".chart-container")
-  var weekChart = document.createElement('div') 
-  weekChart.id = "weekchart"
-  chartContainer.appendChild(weekChart);
 
   $('#weekchart').highcharts({
-    // legend: {
-    //   layout: 'vertical',
-    //   verticalAlign: 'top',
-    //   floating: true,
-    // },
     chart: {
         marginLeft: 320,
         type: 'bar'
     },
     title: {
-        text: 'FALL 2013 WDI: WEEK #'
+        text: weekChartTitle + ": Week "  
     },
     xAxis: {
         categories: week1Topics
