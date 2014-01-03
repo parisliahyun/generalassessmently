@@ -25,11 +25,11 @@ function init() {
   weeklyTotals = ""
   weeklyMaxTotals = ""
   all = []
-  weekly = 0;
   reducedTotals = []
   reducedMaxTotals = []
-  weekname = 0
   allWeeks = []
+  allWeek1Scores = []
+ 
   
 // *********** END VARIABLES FOR OVERVIEW DATA ***********************
 
@@ -62,6 +62,20 @@ function init() {
   allWeeks.push(weekname)
   listofWeeks = []
   for (i in allWeeks) {listofWeeks.push(_.pluck(allWeeks[i], "coursematerial"))};
+
+  // ************ GRAB DATA FOR WEEKLY CHART ***********************
+  // X AXIS
+  week1Rows = _.where(weeklyTotals, {week: 1})  
+  week1Topics = []
+  for (i in week1Rows) {week1Topics.push(week1Rows[i].coursematerial)};
+
+  // Y AXIS
+  allWeek1Scores.push(week1Rows)
+  week1Scores = []
+  for (i in allWeek1Scores) {week1Scores.push(_.pluck(allWeek1Scores[i], "value"))};
+  combineScores = _.zip.apply([], week1Scores)
+  reducedScores = []
+  for (i in combineScores) {reducedScores.push(_.reduce(combineScores[i], function(memo, num){ return memo + num; }, 0))};
 }
 
 // *********** END TABLETOP SIMPLESHEET ***********************
@@ -169,11 +183,6 @@ function overviewChartInit() {
 
 // ******************** BEGIN HIGHCHARTS FOR WEEK VIEW *****************
 
-range1 = _.range(3, 66, 1);
-topicize = _.map(range1, function(num){ return "weeklyTotals["+num+"].coursematerial"; })
-week1valueize = _.map(range1, function(num){ return "weeklyTotals["+num+"].value"; })
-// totalWeek1Values = _.object(topics, week1values)
-
 function weekChartInit() { 
   var chartContainer = document.querySelector(".chart-container")
   var weekChart = document.createElement('div') 
@@ -194,7 +203,7 @@ function weekChartInit() {
         text: 'FALL 2013 WDI: WEEK #'
     },
     xAxis: {
-        categories: _.map(topicize, function(num){ return eval(num); })
+        categories: week1Topics
     },
     yAxis: {
       allowDecimals: false,
@@ -205,7 +214,7 @@ function weekChartInit() {
     },
     series: [{
       name: 'STUDENT ASSESSMENT POINTS',
-        data: _.map(week1valueize, function(num){ return eval(num); })
+        data: reducedScores
       }]
   });
 };
