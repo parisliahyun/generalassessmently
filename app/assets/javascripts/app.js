@@ -115,6 +115,7 @@ $( "#byweek" ).click(function() {
   var students = document.querySelector("#content")
   students.innerHTML = '';
 
+
   // append week selector
   var chartContainer = document.querySelector(".chart-container");
   var weekDiv = document.createElement('div')
