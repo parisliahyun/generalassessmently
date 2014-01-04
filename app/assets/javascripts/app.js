@@ -65,23 +65,6 @@ function init() {
   listofWeeks = []
   for (i in allWeeks) {listofWeeks.push(_.pluck(allWeeks[i], "coursematerial"))};
 
-  // ************ FOR WEEK CHART *********** 
-
-  // TITLE
-  weekChartTitle = _.where(weeklyTotals, {coursematerial: "Instance:"})  
-  weekChartTitle = _.pluck(weekChartTitle, 'value'); 
-  // X AXIS
-  week1Rows = _.where(weeklyTotals, {week: 1})  
-  week1Topics = []
-  for (i in week1Rows) {week1Topics.push(week1Rows[i].coursematerial)};
-
-  // Y AXIS
-  allWeek1Scores.push(week1Rows)
-  week1Scores = []
-  for (i in allWeek1Scores) {week1Scores.push(_.pluck(allWeek1Scores[i], "value"))};
-  combineScores = _.zip.apply([], week1Scores)
-  reducedScores = []
-  for (i in combineScores) {reducedScores.push(_.reduce(combineScores[i], function(memo, num){ return memo + num; }, 0))};
 }
 
 // *********** END TABLETOP SIMPLESHEET ***********************
@@ -155,6 +138,7 @@ $( "#byweek" ).click(function() {
 function weekSelectInit() {
   $( "#mynameisjanetpausejacksonifyernasty" ).change(function() {
   console.log("My name is Janet. Jacket if yer nasty.")
+  weekChartInit()
   }); 
 }  
 
@@ -165,27 +149,18 @@ $( "#bystudent" ).click(function() {
   chartContainer.innerHTML = '';
   var weekDiv = document.querySelector("#weekdiv")
   weekDiv.innerHTML = '';
-  studentSearch();
+  // studentSearch();
   studentInit();
 });    
 
 // ******************** END BUTTONS *****************
 
-// ******************** BEGIN WEEK OPTIONS *****************
-
-// $( "#weekselect" ).change(function() {
-//   console.log($("oh god"));
-//   process($(this).children(":selected").html());
-//   weekChartInit();
-// });    
-
-
 // ******************** BEGIN STUDENT SEARCH *****************
 
-function studentSearch() {
+// function studentSearch() {
 // append search bar
 
-}
+// }
 
 // ******************** END STUDENT SEARCH *****************
 
@@ -228,12 +203,34 @@ function overviewChartInit() {
 
 function weekChartInit() { 
   // SELECTED WEEK
-  selectedWeek = parseInt(document.getElementById("weekselect").value.replace("week ", ""));
+  selectedWeek = parseInt(document.getElementById("mynameisjanetpausejacksonifyernasty").value.replace("week ", ""));
   console.log("selected week is: " + selectedWeek);
   var chartContainer = document.querySelector(".chart-container");
   var weekChart = document.createElement('div'); 
   weekChart.id = "weekchart";
   chartContainer.appendChild(weekChart);
+
+
+  // ************ FOR WEEK CHART *********** 
+
+  // TITLE
+  weekChartTitle = _.where(weeklyTotals, {coursematerial: "Instance:"})  
+  weekChartTitle = _.pluck(weekChartTitle, 'value'); 
+  // X AXIS
+  weekRows = _.where(weeklyTotals, {week: selectedWeek})  
+  weekTopics = []
+  for (i in weekRows) {weekTopics.push(weekRows[i].coursematerial)};
+
+  // Y AXIS
+  allWeek1Scores.push(weekRows)
+  week1Scores = []
+  for (i in allWeek1Scores) {week1Scores.push(_.pluck(allWeek1Scores[i], "value"))};
+  combineScores = _.zip.apply([], week1Scores)
+  reducedScores = []
+  for (i in combineScores) {reducedScores.push(_.reduce(combineScores[i], function(memo, num){ return memo + num; }, 0))};
+
+
+  // THE WEEK CHART
 
   $('#weekchart').highcharts({
     chart: {
@@ -241,10 +238,10 @@ function weekChartInit() {
         type: 'bar'
     },
     title: {
-        text: weekChartTitle + ": Week "  
+        text: weekChartTitle + ": Week "  + selectedWeek
     },
     xAxis: {
-        categories: week1Topics
+        categories: weekTopics
     },
     yAxis: {
       allowDecimals: false,
@@ -264,6 +261,5 @@ function weekChartInit() {
 
 
 window.onload = function() { 
-  // init(); 
   console.log("happy new year."); 
 };
