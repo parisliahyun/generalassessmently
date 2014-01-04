@@ -66,6 +66,7 @@ function init() {
   for (i in allWeeks) {listofWeeks.push(_.pluck(allWeeks[i], "coursematerial"))};
 
   // ************ FOR WEEK CHART *********** 
+
   // TITLE
   weekChartTitle = _.where(weeklyTotals, {coursematerial: "Instance:"})  
   weekChartTitle = _.pluck(weekChartTitle, 'value'); 
@@ -117,13 +118,15 @@ $( "#overview" ).click(function() {
   chartContainer.innerHTML = '';
   var students = document.querySelector("#content")
   students.innerHTML = '';
+  var weekDiv = document.querySelector("#weekdiv")
+  weekDiv.innerHTML = '';
   overviewChartInit();
 });
 
 // 'BY WEEK' BUTTON
 // render a page with a list of weeks that link to the drilldowns by topic
 $( "#byweek" ).click(function() {
-  console.log( "Love is a battlefield." );
+  console.log( "Love is a battlefield. The 'week' button has fired." );
   var chartContainer = document.querySelector(".chart-container")
   chartContainer.innerHTML = '';
   var students = document.querySelector("#content")
@@ -135,35 +138,47 @@ $( "#byweek" ).click(function() {
   weekDiv.id = "weekdiv"
   chartContainer.parentNode.insertBefore(weekDiv, chartContainer);
   var weekSelect = document.createElement('select');
-  weekSelect.id = "weekSelect";
+  weekSelect.id = "mynameisjanetpausejacksonifyernasty";
+  weekSelect.name = "mynameisjanetpausejacksonifyernasty"
   weekDiv.appendChild(weekSelect);
-  var weekChart = document.createElement('div'); 
-  weekChart.id = "weekchart";
-  chartContainer.appendChild(weekChart);
   
-
   for (var i = 0; i < listofWeeks[0].length; i++) {
     var weekOptions = document.createElement('option');
-    weekOptions.id = "weekOptions";
+    weekOptions.id = "weekoptions";
     weekOptions.textContent = listofWeeks[0][i];
+    weekOptions.value = listofWeeks[0][i];
     weekSelect.appendChild(weekOptions);
   }
-
-  weekChartInit() 
+  weekSelectInit();
 });
 
+function weekSelectInit() {
+  $( "#mynameisjanetpausejacksonifyernasty" ).change(function() {
+  console.log("My name is Janet. Jacket if yer nasty.")
+  }); 
+}  
+
 // 'BY STUDENT' BUTTON
-// render a page with a list of students that link to the drilldown per student.
+// render a page with a list of students that links to the drilldown per student.
 $( "#bystudent" ).click(function() {
   var chartContainer = document.querySelector(".chart-container")
   chartContainer.innerHTML = '';
-  var weekButton = document.querySelector("#byweek")
-  weekButton.innerHTML = '';
+  var weekDiv = document.querySelector("#weekdiv")
+  weekDiv.innerHTML = '';
   studentSearch();
   studentInit();
-});  
-  
+});    
+
 // ******************** END BUTTONS *****************
+
+// ******************** BEGIN WEEK OPTIONS *****************
+
+// $( "#weekselect" ).change(function() {
+//   console.log($("oh god"));
+//   process($(this).children(":selected").html());
+//   weekChartInit();
+// });    
+
 
 // ******************** BEGIN STUDENT SEARCH *****************
 
@@ -212,6 +227,13 @@ function overviewChartInit() {
 // ******************** BEGIN HIGHCHARTS FOR WEEK VIEW *****************
 
 function weekChartInit() { 
+  // SELECTED WEEK
+  selectedWeek = parseInt(document.getElementById("weekselect").value.replace("week ", ""));
+  console.log("selected week is: " + selectedWeek);
+  var chartContainer = document.querySelector(".chart-container");
+  var weekChart = document.createElement('div'); 
+  weekChart.id = "weekchart";
+  chartContainer.appendChild(weekChart);
 
   $('#weekchart').highcharts({
     chart: {
@@ -239,6 +261,7 @@ function weekChartInit() {
 };
 
 // ******************** END HIGHCHARTS FOR WEEK VIEW *****************
+
 
 window.onload = function() { 
   // init(); 
