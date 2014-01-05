@@ -24,13 +24,15 @@ function init() {
 
   allSpreadsheetData = ""
   weeklyMaxTotals = ""
-  all = []
+  combinedWeekTotalFromEachSpreadsheet = []
   reducedTotals = []
   reducedMaxTotals = []
   allWeeks = []
   allWeekScores = []
   data = ""
   listofWeeks = []
+  average = []
+
 
 // *********** END VARIABLES FOR CHARTS ***********************
 
@@ -44,10 +46,10 @@ function init() {
   // find all hashes that contain totals and put them in an array
 
   weekly = _.where(allSpreadsheetData, {week: "weektotal"}) 
-  all.push(weekly) 
+  combinedWeekTotalFromEachSpreadsheet.push(weekly) 
   // pluck from the 'value' column FOR STUDENT TOTALS
   listofValues = []
-  for (i in all) {listofValues.push(_.pluck(all[i], "value"))};
+  for (i in combinedWeekTotalFromEachSpreadsheet) {listofValues.push(_.pluck(combinedWeekTotalFromEachSpreadsheet[i], "value"))};
   // combine the totals from each spreadsheet
   studentTotalsFromAllSpreadsheets = _.zip.apply([], listofValues)
   reducedTotals = []
@@ -55,10 +57,15 @@ function init() {
 
   // pluck from the 'maxpoints' column FOR MAX POINT TOTALS
   listofMaxValues = []   
-  for (i in all) {listofMaxValues.push(_.pluck(all[i], "maxpoints"))};
+  for (i in combinedWeekTotalFromEachSpreadsheet) {listofMaxValues.push(_.pluck(combinedWeekTotalFromEachSpreadsheet[i], "maxpoints"))};
   maxTotalsFromAllSpreadsheets = _.zip.apply([], listofMaxValues)
   reducedMaxTotals = []
   for (i in maxTotalsFromAllSpreadsheets) {reducedMaxTotals.push(_.reduce(maxTotalsFromAllSpreadsheets[i], function(memo, num){ return memo + num; }, 0))};
+
+  average = []
+  // average
+  for( var i = 0 ; i < reducedTotals.length;i++){ average.push( reducedTotals[i] * 100 / reducedMaxTotals[i]) };
+    console.log("average: " + average)
 
   // X AXIS
   weekname = _.where(allSpreadsheetData, {week: "weekname"})  
@@ -148,17 +155,14 @@ function weekSelected() {
 }; 
 
 function destroyChart() {
-  var chart = $('#weekchart').highcharts();
-  console.log("this is the destroyed chart function: " + chart.series[0].processedYData );   
+  var chart = $('#weekchart').highcharts();  
   chart.series[0].processedYData = [];
   chart.series[0].setData([]);
   chart.series[0].remove(true);
   allWeekScores = [];
   reducedScores = [];
   combineScores = [];
-  console.log("after destroy: " + chart.series );
-  console.log("after destroy combineScores: " + combineScores);
- newThing(); 
+  newThing(); 
 }  
 
 function newThing() {
@@ -196,7 +200,6 @@ function overviewChartInit() {
   var overviewChart = document.createElement('div') 
   overviewChart.id = "overviewchart"
   chartContainer.appendChild(overviewChart);
-  var average = reducedTotals / reducedMaxTotals;
 
   $('#overviewchart').highcharts({
     chart: {
@@ -217,10 +220,13 @@ function overviewChartInit() {
     },
     series: [{
       name: 'STUDENT ASSESSMENT POINTS',
-        data: reducedTotals
+      data: reducedTotals
       }, {
       name: 'MAXIMUM ASSESSMENT POINTS',
-        data: reducedMaxTotals
+      data: reducedMaxTotals
+    }, {
+      name: 'AVERAGE',
+      data: average 
     }]
   });
 };
@@ -241,10 +247,6 @@ function weekChartInit() {
 dataForWeekChart = ""; 
 
 function weekChartCallback(spreadsheetData) { 
-
-
-
-
   dataForWeekChart = spreadsheetData
   // SELECTED WEEK
   selectedWeek = parseInt(document.getElementById("mynameisjanetpausejacksonifyernasty").value.replace("week ", ""));
@@ -271,11 +273,8 @@ function weekChartCallback(spreadsheetData) {
   for (i in allWeekScores) {weekScores.push(_.pluck(allWeekScores[i], "value"))};
   combineScores = [];
   combineScores = _.zip.apply([], weekScores); 
-  console.log("combineScores: 2 " + combineScores);
   reducedScores = [];
-  console.log("reduced scores: " + reducedScores)
   for (i in combineScores) {reducedScores.push(_.reduce(combineScores[i], function(memo, num){ return memo + num; }, 0))}; 
-  console.log("reduced scores #2: " + reducedScores); 
   // THE WEEK CHART
   $('#weekchart').highcharts({
     chart: {
@@ -301,7 +300,6 @@ function weekChartCallback(spreadsheetData) {
       }], 
   });  
 reducedScores = [];
-console.log("reduced scores #3: " + reducedScores);
 };
 
 // ******************** END HIGHCHARTS FOR WEEK VIEW ***************** 
