@@ -30,7 +30,8 @@ function init() {
   allWeeks = []
   allWeekScores = []
   data = ""
-  
+  listofWeeks = []
+
 // *********** END VARIABLES FOR CHARTS ***********************
 
 
@@ -62,7 +63,6 @@ function init() {
   // X AXIS
   weekname = _.where(allSpreadsheetData, {week: "weekname"})  
   allWeeks.push(weekname)
-  listofWeeks = []
   for (i in allWeeks) {listofWeeks.push(_.pluck(allWeeks[i], "coursematerial"))};
 }
 
@@ -130,25 +130,49 @@ $( "#byweek" ).click(function() {
       weekOptions.textContent = listofWeeks[0][i];
       weekOptions.value = listofWeeks[0][i];
       weekSelect.appendChild(weekOptions);
-    }
+    } 
   weekSelected();
 });
 
 function weekSelected() {
-  $( "#mynameisjanetpausejacksonifyernasty" ).change(function() {
-  // console.log("My name is Janet. Jacket if yer nasty.")
-  weekChartInit()
+  $( "#mynameisjanetpausejacksonifyernasty" ).change(function() {  
+    chart = $('#weekchart').highcharts();
+  if ($("#weekchart").length > 0) {      
+      reducedScores = [];
+      combineScores = [];
+      destroyChart();     
+    } else {
+      weekChartInit();  
+    }        
   }); 
+}; 
+
+function destroyChart() {
+  var chart = $('#weekchart').highcharts();
+  console.log("this is the destroyed chart function: " + chart.series[0].processedYData );   
+  chart.series[0].processedYData = [];
+  chart.series[0].setData([]);
+  chart.series[0].remove(true);
+  allWeekScores = [];
+  reducedScores = [];
+  combineScores = [];
+  console.log("after destroy: " + chart.series );
+  console.log("after destroy combineScores: " + combineScores);
+ newThing(); 
 }  
 
+function newThing() {
+  weekChartInit();
+}
+ 
 // 'BY STUDENT' BUTTON
 // render a page with a list of students that links to the drilldown per student.
 $( "#bystudent" ).click(function() {
   var chartContainer = document.querySelector(".chart-container")
   chartContainer.innerHTML = '';
   if ($("#weekdiv").length > 0) {
-  var weekDiv = document.querySelector("#weekdiv")
-  weekDiv.innerHTML = '';
+    var weekDiv = document.querySelector("#weekdiv")
+    weekDiv.innerHTML = "";
   }
   // studentSearch();
   studentInit();
@@ -172,6 +196,7 @@ function overviewChartInit() {
   var overviewChart = document.createElement('div') 
   overviewChart.id = "overviewchart"
   chartContainer.appendChild(overviewChart);
+  var average = reducedTotals / reducedMaxTotals;
 
   $('#overviewchart').highcharts({
     chart: {
@@ -181,11 +206,13 @@ function overviewChartInit() {
         text: 'FALL 2013 WDI OVERVIEW'
     },
     xAxis: {
+        allowDecimals: true,
         categories: listofWeeks[0]
     },
     yAxis: {
+        allowDecimals: true,
         title: {
-            text: 'SELF-ASSESSMENT SCORES ACROSS ALL STUDENTS'
+          text: 'SELF-ASSESSMENT SCORES ACROSS ALL STUDENTS'
         }
     },
     series: [{
@@ -202,19 +229,23 @@ function overviewChartInit() {
 
 // ******************** BEGIN HIGHCHARTS FOR WEEK VIEW *****************
 
-function weekChartInit() {
+function weekChartInit() { 
   for (i = 0; i < $result.length; i++) { 
   Tabletop.init( { key: $result[i].innerHTML,
-                   callback: theCallback,
+                   callback: weekChartCallback,
                    simpleSheet: true, 
                    parseNumbers: true} );
   }
 };
 
-stuffINeed = ""
+dataForWeekChart = ""; 
 
-function theCallback(againData) { 
-  stuffINeed = againData
+function weekChartCallback(spreadsheetData) { 
+
+
+
+
+  dataForWeekChart = spreadsheetData
   // SELECTED WEEK
   selectedWeek = parseInt(document.getElementById("mynameisjanetpausejacksonifyernasty").value.replace("week ", ""));
   console.log("selected week is: " + selectedWeek);
@@ -226,25 +257,26 @@ function theCallback(againData) {
   // // ************ FOR WEEK CHART *********** 
 
   // TITLE
-  weekChartTitle = _.where(stuffINeed, {coursematerial: "Instance:"})  
+  weekChartTitle = _.where(dataForWeekChart, {coursematerial: "Instance:"})  
   weekChartTitle = _.pluck(weekChartTitle, 'value');
   
   // X AXIS
-  weekRows = _.where(stuffINeed, {week: selectedWeek}) 
-  // console.log(weekRows)
-  weekTopics = []
+  weekRows = _.where(dataForWeekChart, {week: selectedWeek}) 
+  weekTopics = [];
   for (i in weekRows) {weekTopics.push(weekRows[i].coursematerial)};
 
   // Y AXIS
-  allWeekScores.push(weekRows)
-  weekScores = []
+  allWeekScores.push(weekRows);
+  weekScores = [];
   for (i in allWeekScores) {weekScores.push(_.pluck(allWeekScores[i], "value"))};
-  combineScores = _.zip.apply([], weekScores)
-  reducedScores = []
+  combineScores = [];
+  combineScores = _.zip.apply([], weekScores); 
+  console.log("combineScores: 2 " + combineScores);
+  reducedScores = [];
+  console.log("reduced scores: " + reducedScores)
   for (i in combineScores) {reducedScores.push(_.reduce(combineScores[i], function(memo, num){ return memo + num; }, 0))}; 
-
+  console.log("reduced scores #2: " + reducedScores); 
   // THE WEEK CHART
-
   $('#weekchart').highcharts({
     chart: {
         marginLeft: 320,
@@ -266,13 +298,14 @@ function theCallback(againData) {
     series: [{
       name: 'STUDENT ASSESSMENT POINTS',
         data: reducedScores
-      }]
-  });
+      }], 
+  });  
+reducedScores = [];
+console.log("reduced scores #3: " + reducedScores);
 };
 
-// ******************** END HIGHCHARTS FOR WEEK VIEW *****************
-
+// ******************** END HIGHCHARTS FOR WEEK VIEW ***************** 
 
 window.onload = function() { 
-  console.log("happy new year."); 
+  console.log("happy new year.");  
 };
