@@ -70,6 +70,8 @@ GEM
       dm-transactions (~> 1.2.0)
       dm-types (~> 1.2.0)
       dm-validations (~> 1.2.0)
+    dm-accepts_nested_attributes_for (1.2.0)
+      dm-core (~> 1.2.0)
     dm-aggregates (1.2.0)
       dm-core (~> 1.2.0)
     dm-constraints (1.2.0)
@@ -243,8 +245,13 @@ DEPENDENCIES
   carrierwave_direct
   coffee-rails (~> 4.0.0)
   datamapper (~> 1.2.0)
+  dm-accepts_nested_attributes_for (~> 1.2.0)
+  dm-core (~> 1.2.1)
+  dm-migrations (~> 1.2.0)
   dm-postgres-adapter (~> 1.2.0)
   dm-serializer (~> 1.2.2)
+  dm-timestamps (~> 1.2.0)
+  dm-validations (~> 1.2.0)
   fog (~> 1.19.0)
   jbuilder (~> 1.2)
   jquery-rails

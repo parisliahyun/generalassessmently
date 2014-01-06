@@ -1,11 +1,17 @@
-<!-- UPLOAD SPREADSHEETS -->
+<div class="span6">
+ <!-- binding.pry %> -->
+<!--  <= form_for Spreadsheet.new, :html => { :multipart => true } do |f| %> 
+    <div class="form group">
+    <= f.label :key %>
+    <= f.text_field :key, class: "form-control" %>
+  </div>
+   <= f.submit nil, class: "btn btn-primary" %>
+ < end %> -->
 
-<!-- <div class="span6">
-  <h2>The Spreadsheets</h2>
-  <form action="/spreadsheets" method="post" class="form-inline">
+  <form action= "/courses/<%= @course.id %>/spreadsheets" method="post" class="form-inline">
     <input name="key" type="text" placeholder="Add a published URL"> 
     <button type="submit" class="btn btn-primary">Add it</button>
-  </form>  -->
+  </form> 
 
   <h3>Current spreadsheets</h3>
   <ul>

@@ -11,16 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131224191814) do
+ActiveRecord::Schema.define(version: 20140106174131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "courses", force: true do |t|
+    t.string "title", limit: 50
+  end
+
+  add_index "courses", ["title"], name: "unique_courses_title", unique: true, using: :btree
+
   create_table "spreadsheets", force: true do |t|
-    t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "google_key"
+    t.integer  "course_id"
   end
 
 end

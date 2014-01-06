@@ -1,29 +1,49 @@
 class SpreadsheetsController < ApplicationController
-
+  before_filter :set_course
   def index
     @spreadsheets = Spreadsheet.all
     @spreadsheets.to_json
   end
 
+  def new
+    @course = Course.get(params[:course_id])
+    # @spreadsheet = Spreadsheet.new
+    # @course.spreadsheets << Spreadsheet.new
+    # binding.pry
+    render :new=>"new"
+  end
+
   def show
+    @course = Course.get(params[:course_id])
     @spreadsheet = Spreadsheet.get(params[:id])
     @spreadsheet.to_json
   end
 
   def create
-    spreadsheet = Spreadsheet.from_key(params[:key]) 
-    if spreadsheet.save
+    course = Course.get(params[:course_id])
+    spreadsheet = Spreadsheet.from_key(params["key"])
+    course.spreadsheets << spreadsheet
+    course.save
+    # binding.pry
+    if course.save
+    # if spreadsheet.save 
       @notice = "Added spreadsheet"
     else
       @error = "Could not add spreadsheet"
     end     
-      redirect_to root_path
+      redirect_to courses_path
   end
 
   def update
     @updated = Spreadsheet.select(&:write_content)
     @notice = "Updated #{@updated.length} spreadsheets"
-    erb :index
   end
+
+  private
+
+def set_course
+  @course = Course.get(params[:id])
+  current_course = @course
+end
 
 end

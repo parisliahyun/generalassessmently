@@ -1,7 +1,8 @@
 // GRAB THE DATA FROM THE SERVER.
  
 $result = "";
-$.ajax({ url: 'spreadsheets', 
+// $.ajax({ url: 'spreadsheets', 
+$.ajax({ url: 'courses/1/spreadsheets', 
   cache: false, 
   success: function(response) 
   { $result = $(response).find('#keys'); 
@@ -16,13 +17,14 @@ function init() {
   Tabletop.init( { key: $result[i].innerHTML,
                    callback: showInfo,
                    simpleSheet: true, 
+                   // proxy: 'https://s3.amazonaws.com/googlespreadsheets',
                    parseNumbers: true} );
   }
 };
 
 // *********** SETTING UP VARIABLES FOR CHARTS ***********************
 
-  allSpreadsheetData = ""
+  overviewData = ""
   weeklyMaxTotals = ""
   combinedWeekTotalFromEachSpreadsheet = []
   reducedTotals = []
@@ -40,12 +42,14 @@ function init() {
 // *********** BEGIN CALLBACK FUNCTION FOR TABLETOP SIMPLESHEET ***********************
 
   function showInfo(data) {
-  allSpreadsheetData = data 
+  overviewData = data 
   // *********** FOR OVERVIEW CHART ***********
   // Y AXIS
   // find all hashes that contain totals and put them in an array
+  overviewChartTitle = _.where(overviewData, {coursematerial: "Instance:"})  
+  overviewChartTitle = _.pluck(overviewChartTitle, 'value');
 
-  weekly = _.where(allSpreadsheetData, {week: "weektotal"}) 
+  weekly = _.where(overviewData, {week: "weektotal"}) 
   combinedWeekTotalFromEachSpreadsheet.push(weekly) 
   // pluck from the 'value' column FOR STUDENT TOTALS
   listofValues = []
@@ -68,7 +72,7 @@ function init() {
     console.log("average: " + average)
 
   // X AXIS
-  weekname = _.where(allSpreadsheetData, {week: "weekname"})  
+  weekname = _.where(overviewData, {week: "weekname"})  
   allWeeks.push(weekname)
   for (i in allWeeks) {listofWeeks.push(_.pluck(allWeeks[i], "coursematerial"))};
 }
@@ -206,7 +210,7 @@ function overviewChartInit() {
         type: 'bar'
     },
     title: {
-        text: 'FALL 2013 WDI OVERVIEW'
+        text: overviewChartTitle + ' Overview'
     },
     xAxis: {
         allowDecimals: true,

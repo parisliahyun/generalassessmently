@@ -24,6 +24,11 @@ gem "redis"
 gem "pry-rails"
 gem 'unf'
 gem "dm-serializer", "~> 1.2.2"
+gem "dm-core", "~> 1.2.1"
+gem "dm-migrations", "~> 1.2.0"
+gem "dm-validations", "~> 1.2.0"
+gem "dm-timestamps", "~> 1.2.0"
+gem "dm-accepts_nested_attributes_for", "~> 1.2.0"
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

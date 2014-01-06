@@ -2,11 +2,17 @@
 DataMapper.setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/GeneralAssessmently_development')
 
 class Spreadsheet
+  extend ActiveModel::Naming
+  include ActiveModel::Conversion
   include DataMapper::Resource
   # mount_uploader :google_key, GooglekeyUploader
 
   property :id, Serial
   property :google_key, String, :unique => true, :required => true
+  property :course_id,  String,        :unique_index => :uniqueness, :required => true
+
+  belongs_to :course
+  
 
   def base_json_path
     "/feeds/worksheets/#{google_key}/public/basic?alt=json-in-script&callback=Tabletop.singleton.loadSheets"
@@ -77,8 +83,10 @@ class Spreadsheet
   end
   
 end
-
+Spreadsheet.model_name
 DataMapper.finalize
+# DataMapper.auto_upgrade! 
+
 
 
 
