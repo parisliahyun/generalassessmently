@@ -1,13 +1,15 @@
 class CoursesController < ApplicationController
   before_filter :set_course
+  
   def index
     @courses = Course.all
-    # @courses.to_json
+    @courses.to_json
   end
 
   def show
     @course = Course.get(params[:id])
-    # @course.to_json
+    @spreadsheets = Spreadsheet.all(Spreadsheet.course.id => params[:id])
+    @course.to_json
   end
 
   def create
@@ -17,14 +19,14 @@ class CoursesController < ApplicationController
     else
       @error = "Could not add course"
     end     
-      redirect_to root_path
+      redirect_to course_path(@course.id)
   end
 
 private
 
-def set_course
-  @course = Course.get(params[:id])
-  current_course = @course
-end
+  def set_course
+    @course = Course.get(params[:id])
+    current_course = @course
+  end
 
 end

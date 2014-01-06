@@ -7,9 +7,6 @@ class SpreadsheetsController < ApplicationController
 
   def new
     @course = Course.get(params[:course_id])
-    # @spreadsheet = Spreadsheet.new
-    # @course.spreadsheets << Spreadsheet.new
-    # binding.pry
     render :new=>"new"
   end
 
@@ -23,15 +20,16 @@ class SpreadsheetsController < ApplicationController
     course = Course.get(params[:course_id])
     spreadsheet = Spreadsheet.from_key(params["key"])
     course.spreadsheets << spreadsheet
-    course.save
+    spreadsheet.save!
+    course.spreadsheets.save!
+    course.save!
     # binding.pry
     if course.save
-    # if spreadsheet.save 
       @notice = "Added spreadsheet"
     else
       @error = "Could not add spreadsheet"
     end     
-      redirect_to courses_path
+      redirect_to course_path(course.id)
   end
 
   def update
@@ -39,7 +37,7 @@ class SpreadsheetsController < ApplicationController
     @notice = "Updated #{@updated.length} spreadsheets"
   end
 
-  private
+private
 
 def set_course
   @course = Course.get(params[:id])

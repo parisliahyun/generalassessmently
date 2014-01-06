@@ -2,7 +2,7 @@
  
 $result = "";
 // $.ajax({ url: 'spreadsheets', 
-$.ajax({ url: 'courses/1/spreadsheets', 
+$.ajax({ url: 'courses/2', 
   cache: false, 
   success: function(response) 
   { $result = $(response).find('#keys'); 
