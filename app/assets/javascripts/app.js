@@ -1,14 +1,15 @@
 // GRAB THE DATA FROM THE SERVER.
- 
+function filterCourses(text) {
 $result = "";
 // $.ajax({ url: 'spreadsheets', 
-$.ajax({ url: 'courses/2', 
+$.ajax({ url: 'courses/' + text,
   cache: false, 
   success: function(response) 
   { $result = $(response).find('#keys'); 
   init();
   }   
 });
+};
 
 // *********** START TABLETOP SIMPLESHEET FOR HIGHCHARTS ***********************
 
@@ -309,5 +310,35 @@ reducedScores = [];
 // ******************** END HIGHCHARTS FOR WEEK VIEW ***************** 
 
 window.onload = function() { 
-  console.log("happy new year.");  
+  console.log("happy new year."); 
+ //these elements will be used to get the user's input
+  var user_input = document.getElementById('enter-course-field');
+  var button = document.getElementById('add-item');
+  //this function will create a new todo task using the text entered into the field
+  //it responds to a mouse click and an 'enter' keypress events
+
+  var inputEvent = function(event) {
+    //keyCode of 'enter' is 13, keyCode of leftclick is 0
+    if(event.keyCode === 13 || event.keyCode === 0) {
+      filterCourses(user_input.value);
+      console.log(user_input.value)
+      //pass the input's value into the createTask method that will generate
+      //and append a new todo task
+      //clear the input field
+      user_input.value = '';
+    }
+  }
+  //because we want to give the user a choice of pressing 'enter' or clicking on
+  //the Add Item button we add our inputEvent function to both types of events
+  button.onclick = inputEvent;
+  user_input.onkeypress = inputEvent;
+ 
+ 
 };
+
+
+
+
+
+
+
