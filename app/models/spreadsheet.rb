@@ -85,7 +85,7 @@ class Spreadsheet
 end
 Spreadsheet.model_name
 DataMapper.finalize
-# DataMapper.auto_upgrade! 
+DataMapper.auto_upgrade! 
 
 
 
