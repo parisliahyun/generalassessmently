@@ -1,6 +1,5 @@
 <% @courses.each do |course| %>
 <ul>
-<li><%= course.id %></li>
-<li id="course-title"><%= course.title %></li>
+<li><a href="<%= course_path(course.id) %>">ID: <%=course.id%>. Course Name: <%=course.title%></a></li>
 </ul>
 <% end %>

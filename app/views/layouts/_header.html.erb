@@ -1,0 +1,19 @@
+<nav class="navbar navbar-inverse navbar-default" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <%= link_to "GENERAL ASSESSMENT.LY", root_path, class: "navbar-brand" %>
+  </div>
+
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav navbar-right">
+      <li><%= link_to "Course List", courses_path %></li>
+      <li><%= link_to "Add a Course", new_course_path %></li>
+      <li><%= link_to "See Graphs", root_path %></li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>

@@ -321,9 +321,7 @@ window.onload = function() {
     //keyCode of 'enter' is 13, keyCode of leftclick is 0
     if(event.keyCode === 13 || event.keyCode === 0) {
       filterCourses(user_input.value);
-      console.log(user_input.value)
-      //pass the input's value into the createTask method that will generate
-      //and append a new todo task
+      console.log(user_input.value);
       //clear the input field
       user_input.value = '';
     }
@@ -333,10 +331,7 @@ window.onload = function() {
   button.onclick = inputEvent;
   user_input.onkeypress = inputEvent;
  
- 
 };
-
-
 
 
 
