@@ -8,7 +8,9 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.get(params[:id])
-    @spreadsheets = Spreadsheet.all(Spreadsheet.course.id => params[:id])
+    # binding.pry
+    @spreadsheets = Spreadsheet.all(course_id: params[:id])
+    # @spreadsheets = Spreadsheet.all(Spreadsheet.course.id => params[:id])
     @course.to_json
   end
 
