@@ -35,7 +35,12 @@ function init() {
   data = ""
   listofWeeks = []
   average = []
-
+  selectedWeek = "";
+  weekTopics = [];
+  weekRows = [];
+  weekScores = [];
+  allNames = [];
+  theScores = [];
 
 // *********** END VARIABLES FOR CHARTS ***********************
 
@@ -173,6 +178,58 @@ function destroyChart() {
 function newThing() {
   weekChartInit();
 }
+
+// 'BUBBLE TABLE' BUTTON
+$( "#bubblebutton" ).click(function() {
+  // console.log( "Love is a battlefield. The 'week' button has fired." );
+  var chartContainer = document.querySelector(".chart-container")
+  chartContainer.innerHTML = '';
+  var students = document.querySelector("#content")
+  students.innerHTML = '';
+
+  var chartContainer = document.querySelector(".chart-container");
+  var weekDiv = document.createElement('div')
+  weekDiv.id = "weekdiv"
+  chartContainer.parentNode.insertBefore(weekDiv, chartContainer);
+  var weekSelect = document.createElement('select');
+  weekSelect.id = "mynameisjanetpausejacksonifyernasty";
+  weekSelect.name = "mynameisjanetpausejacksonifyernasty"
+  weekDiv.appendChild(weekSelect);
+    for (var i = 0; i < listofWeeks[0].length; i++) {
+      var weekOptions = document.createElement('option');
+      weekOptions.id = "weekoptions";
+      weekOptions.textContent = listofWeeks[0][i];
+      weekOptions.value = listofWeeks[0][i];
+      weekSelect.appendChild(weekOptions);
+    } 
+  bubbleTableSelected();
+});
+
+function bubbleTableSelected() {
+  $( "#mynameisjanetpausejacksonifyernasty" ).change(function() {  
+  if ($("#bubble-table").length > 0) {      
+      destroyChart();     
+    } else {
+    var chartContainer = document.querySelector(".chart-container");
+    var bubbleTable = document.createElement('div'); 
+    bubbleTable.id = "bubble-table";
+    chartContainer.appendChild(bubbleTable);
+    var bubbleTable = document.getElementById('bubble-table'); 
+    var table = document.createElement('table');
+    table.className = "table table-hover table-bordered";
+    bubbleTable.appendChild(table);
+    var tbody = document.createElement('tbody');
+    table.appendChild(tbody);
+    var tr = document.createElement('tr');
+    tr.id = 'table-rows';
+    tbody.appendChild(tr);
+    var topicColumn = document.createElement('th')
+    topicColumn.textContent = " ****** ";
+    tr.appendChild(topicColumn);
+    bubbleTableInit();  
+    }        
+  }); 
+}; 
  
 // 'BY STUDENT' BUTTON
 // render a page with a list of students that links to the drilldown per student.
@@ -280,6 +337,7 @@ function weekChartCallback(spreadsheetData) {
   combineScores = _.zip.apply([], weekScores); 
   reducedScores = [];
   for (i in combineScores) {reducedScores.push(_.reduce(combineScores[i], function(memo, num){ return memo + num; }, 0))}; 
+  
   // THE WEEK CHART
   $('#weekchart').highcharts({
     chart: {
@@ -305,9 +363,76 @@ function weekChartCallback(spreadsheetData) {
       }], 
   });  
 reducedScores = [];
-};
+}; // END WEEK CHART 
 
 // ******************** END HIGHCHARTS FOR WEEK VIEW ***************** 
+
+// ******************** BEGIN BUBBLE TABLE ***************** 
+
+function bubbleTableInit() { 
+  for (i = 0; i < $result.length; i++) { 
+  Tabletop.init( { key: $result[i].innerHTML,
+                   callback: bubbleTableCallback,
+                   simpleSheet: true, 
+                   parseNumbers: true} );
+  }
+};
+
+ function bubbleTableCallback(tableData) {
+
+  dataForBubbleTable = tableData
+  // SELECTED WEEK
+  selectedWeek = parseInt(document.getElementById("mynameisjanetpausejacksonifyernasty").value.replace("week ", ""));
+  console.log("selected week is: " + selectedWeek);
+  selectedRows = _.where(dataForBubbleTable, {week: selectedWeek}) 
+  weekTopics = [];
+  for (i in selectedRows) {weekTopics.push(selectedRows[i].coursematerial)};  
+  theScores.push(selectedRows);
+  moreScores = [];
+  for (i in theScores) {moreScores.push(_.pluck(theScores[i], "value"))};
+  studentNames = _.where(dataForBubbleTable, {coursematerial: "Name:"});  
+  studentNames = _.pluck(studentNames, 'value');
+  console.log("all names: " + allNames)
+  allNames.push(studentNames);
+  bubbleRows = [];
+  bubbleRows = moreScores.push(weekTopics);
+  allRows = _.zip.apply([], moreScores); 
+
+
+  // START APPENDING TABLE ROWS
+  appendStudents(allNames);
+
+ } 
+
+ function appendStudents(allNames) {
+  var tr = document.getElementById('table-rows');
+  var theStudents = document.createElement('th');
+  var tbody = document.querySelector('tbody');
+  for (var i = 0; i < allNames.length; i++) {
+    theStudents.textContent = allNames[i];
+  }
+  theStudents.className = "students";
+  tr.appendChild(theStudents);
+    for (var i = 0; i < allRows.length; i++) {
+      var topicScoreRows = document.createElement('tr');
+      topicScoreRows.id = "table-rows"; 
+      eachRow = allRows[i];
+      for (var n = 0; n < allRows[0].length; n++) {
+        var eachRowText = document.createElement('td');
+        text = eachRow[n];  
+        eachRowText.textContent = allRows[i][n]; 
+        topicScoreRows.appendChild(eachRowText);   
+      } 
+      tbody.appendChild(topicScoreRows); 
+       
+    } 
+  // theStudents.className = "students";
+  // tr.appendChild(theStudents);
+
+ }
+
+
+// ******************** END BUBBLE TABLE ***************** 
 
 window.onload = function() { 
   console.log("happy new year."); 
