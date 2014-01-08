@@ -1,11 +1,5 @@
 <h3>May the odds of a stronger, better WDI be ever in your favor.</h3>
 
-
-<!--   <div id="search-courses">
-      <input class="btn btn-default" type="text" placeholder="Enter a course ID" id="enter-course-field">
-      <button class="btn btn-default" id="add-item">Go</button>
-  </div> -->
-
   <div id="search-courses">
     <select class="btn btn-default" name="enter-course-field" id="enter-course-field">
       <%= @courses.each do |course| %>
@@ -19,7 +13,7 @@
     
 <input class="btn btn-default" id="overview" type="button" value="Overview" />
 <input class="btn btn-default" id="byweek" type="button" value="By Week" />
-<input class="btn btn-default" id="bubblebutton" type="button" value="Bubble Chart" />
+<!-- <input class="btn btn-default" id="bubblebutton" type="button" value="Bubble Chart" /> -->
 <input class="btn btn-default" id="bystudent" type="button" value="By Student" />
 <br>
 <br>
@@ -27,7 +21,7 @@
 <!-- FOR HIGHCHARTS -->
 <div class="chart-container"></div>
 
-<!-- BELOW IS HANDLEBAR -->
+<!-- FOR HANDLEBAR -->
 <div id="content"></div>
 <script id="spreadsheet-template" type="text/x-handlebars-template">
   <table class="table table-hover table-bordered">

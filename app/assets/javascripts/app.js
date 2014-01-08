@@ -1,145 +1,54 @@
 // GRAB THE DATA FROM THE SERVER.
 function filterCourses(text) {
-$result = "";
-// $.ajax({ url: 'spreadsheets', 
-$.ajax({ url: 'courses/' + text,
-  cache: false, 
-  success: function(response) 
-  { $result = $(response).find('#keys'); 
-  init();
-  }   
-});
+  $result = ""; 
+  $.ajax({ url: 'courses/' + text,
+    cache: false, 
+    success: function(response) 
+    { $result = $(response).find('#keys'); 
+    init(showInfo1);
+    }   
+  });
 };
 
-// *********** START TABLETOP SIMPLESHEET FOR HIGHCHARTS ***********************
+function chooseChart(thisIsTheCallback) {
+  init(thisIsTheCallback);
+  console.log("choose chart fired");
+}
 
-function init() {
+// *********** TABLETOP INITIALIZER ***********************
+
+function init(thisIsTheCallback) {
   for (i = 0; i < $result.length; i++) { 
   Tabletop.init( { key: $result[i].innerHTML,
-                   callback: showInfo,
+                   callback: thisIsTheCallback,
                    simpleSheet: true, 
                    // proxy: 'https://s3.amazonaws.com/googlespreadsheets',
                    parseNumbers: true} );
   }
 };
 
-// *********** SETTING UP VARIABLES FOR CHARTS ***********************
-
-  overviewData = ""
-  weeklyMaxTotals = ""
-  combinedWeekTotalFromEachSpreadsheet = []
-  reducedTotals = []
-  reducedMaxTotals = []
-  allWeeks = []
-  allWeekScores = []
-  data = ""
-  listofWeeks = []
-  average = []
-  selectedWeek = "";
-  weekTopics = [];
-  weekRows = [];
-  weekScores = [];
-  allNames = [];
-  theScores = [];
-
-// *********** END VARIABLES FOR CHARTS ***********************
-
-
-// *********** BEGIN CALLBACK FUNCTION FOR TABLETOP SIMPLESHEET ***********************
-
-  function showInfo(data) {
-  overviewData = data 
-  // *********** FOR OVERVIEW CHART ***********
-  // Y AXIS
-  // find all hashes that contain totals and put them in an array
-  overviewChartTitle = _.where(overviewData, {coursematerial: "Instance:"})  
-  overviewChartTitle = _.pluck(overviewChartTitle, 'value');
-
-  weekly = _.where(overviewData, {week: "weektotal"}) 
-  combinedWeekTotalFromEachSpreadsheet.push(weekly) 
-  // pluck from the 'value' column FOR STUDENT TOTALS
-  listofValues = []
-  for (i in combinedWeekTotalFromEachSpreadsheet) {listofValues.push(_.pluck(combinedWeekTotalFromEachSpreadsheet[i], "value"))};
-  // combine the totals from each spreadsheet
-  studentTotalsFromAllSpreadsheets = _.zip.apply([], listofValues)
-  reducedTotals = []
-  for (i in studentTotalsFromAllSpreadsheets) {reducedTotals.push(_.reduce(studentTotalsFromAllSpreadsheets[i], function(memo, num){ return memo + num; }, 0))};
-
-  // pluck from the 'maxpoints' column FOR MAX POINT TOTALS
-  listofMaxValues = []   
-  for (i in combinedWeekTotalFromEachSpreadsheet) {listofMaxValues.push(_.pluck(combinedWeekTotalFromEachSpreadsheet[i], "maxpoints"))};
-  maxTotalsFromAllSpreadsheets = _.zip.apply([], listofMaxValues)
-  reducedMaxTotals = []
-  for (i in maxTotalsFromAllSpreadsheets) {reducedMaxTotals.push(_.reduce(maxTotalsFromAllSpreadsheets[i], function(memo, num){ return memo + num; }, 0))};
-
-  average = []
-  // average
-  for( var i = 0 ; i < reducedTotals.length;i++){ average.push( reducedTotals[i] * 100 / reducedMaxTotals[i]) };
-    console.log("average: " + average)
-
-  // X AXIS
-  weekname = _.where(overviewData, {week: "weekname"})  
-  allWeeks.push(weekname)
-  for (i in allWeeks) {listofWeeks.push(_.pluck(allWeeks[i], "coursematerial"))};
-}
-
-// *********** END TABLETOP SIMPLESHEET ***********************
-
-// ******************** START HANDLEBARS FOR 'PER STUDENT' VIEWS *****************
-
-// PROCESS ALL THE SPREADSHEET URLS FOR 'STUDENT' VIEW.
-function studentInit() {  
-  for (i = 0; i < $result.length; i++) { 
-    Tabletop.init( { key: $result[i].innerHTML,
-                     callback: showInfo1,
-                     parseNumbers: true } );
-    console.log("Sweet libs 4 life.")
-  }
-}
-
-// THE CALLBACK FUNCTION TO RENDER THE 'PER STUDENT' HANDLEBAR TEMPLATE. 
-function showInfo1(data, tabletop) {
-  var source   = $("#spreadsheet-template").html();
-  var template = Handlebars.compile(source);
-  $.each( tabletop.sheets("Students").all(), function(i, spreadsheet) {
-    var html = template(spreadsheet);
-    $("#content").append(html);
-  });
-}
-
-// ******************** END HANDLEBARS *****************
-
 // ******************** BUTTONS *****************
 
 // 'OVERVIEW' BUTTON
 $( "#overview" ).click(function() {
-  var chartContainer = document.querySelector(".chart-container")
-  chartContainer.innerHTML = '';
-  var students = document.querySelector("#content")
-  students.innerHTML = '';
- 
+  clearCharts();
   if ($("#weekdiv").length > 0) {
-    var weekDiv = document.querySelector("#weekdiv")
+    var weekDiv = document.querySelector("#weekdiv");
     weekDiv.innerHTML = '';
   }
-  overviewChartInit();
+  appendOverviewChart();
 });
 
 // 'BY WEEK' BUTTON
 $( "#byweek" ).click(function() {
-  // console.log( "Love is a battlefield. The 'week' button has fired." );
-  var chartContainer = document.querySelector(".chart-container")
-  chartContainer.innerHTML = '';
-  var students = document.querySelector("#content")
-  students.innerHTML = '';
-
+  clearCharts();
   var chartContainer = document.querySelector(".chart-container");
-  var weekDiv = document.createElement('div')
-  weekDiv.id = "weekdiv"
+  var weekDiv = document.createElement('div');
+  weekDiv.id = "weekdiv";
   chartContainer.parentNode.insertBefore(weekDiv, chartContainer);
   var weekSelect = document.createElement('select');
   weekSelect.id = "mynameisjanetpausejacksonifyernasty";
-  weekSelect.name = "mynameisjanetpausejacksonifyernasty"
+  weekSelect.name = "mynameisjanetpausejacksonifyernasty";
   weekDiv.appendChild(weekSelect);
     for (var i = 0; i < listofWeeks[0].length; i++) {
       var weekOptions = document.createElement('option');
@@ -151,49 +60,16 @@ $( "#byweek" ).click(function() {
   weekSelected();
 });
 
-function weekSelected() {
-  $( "#mynameisjanetpausejacksonifyernasty" ).change(function() {  
-    chart = $('#weekchart').highcharts();
-  if ($("#weekchart").length > 0) {      
-      reducedScores = [];
-      combineScores = [];
-      destroyChart();     
-    } else {
-      weekChartInit();  
-    }        
-  }); 
-}; 
-
-function destroyChart() {
-  var chart = $('#weekchart').highcharts();  
-  chart.series[0].processedYData = [];
-  chart.series[0].setData([]);
-  chart.series[0].remove(true);
-  allWeekScores = [];
-  reducedScores = [];
-  combineScores = [];
-  newThing(); 
-}  
-
-function newThing() {
-  weekChartInit();
-}
-
 // 'BUBBLE TABLE' BUTTON
 $( "#bubblebutton" ).click(function() {
-  // console.log( "Love is a battlefield. The 'week' button has fired." );
-  var chartContainer = document.querySelector(".chart-container")
-  chartContainer.innerHTML = '';
-  var students = document.querySelector("#content")
-  students.innerHTML = '';
-
+  clearCharts();
   var chartContainer = document.querySelector(".chart-container");
-  var weekDiv = document.createElement('div')
-  weekDiv.id = "weekdiv"
+  var weekDiv = document.createElement('div');
+  weekDiv.id = "weekdiv";
   chartContainer.parentNode.insertBefore(weekDiv, chartContainer);
   var weekSelect = document.createElement('select');
   weekSelect.id = "mynameisjanetpausejacksonifyernasty";
-  weekSelect.name = "mynameisjanetpausejacksonifyernasty"
+  weekSelect.name = "mynameisjanetpausejacksonifyernasty";
   weekDiv.appendChild(weekSelect);
     for (var i = 0; i < listofWeeks[0].length; i++) {
       var weekOptions = document.createElement('option');
@@ -203,12 +79,59 @@ $( "#bubblebutton" ).click(function() {
       weekSelect.appendChild(weekOptions);
     } 
   bubbleTableSelected();
+
 });
+ 
+// 'BY STUDENT' BUTTON
+$( "#bystudent" ).click(function() {
+  var chartContainer = document.querySelector(".chart-container");
+  chartContainer.innerHTML = '';
+  if ($("#weekdiv").length > 0) {
+    var weekDiv = document.querySelector("#weekdiv");
+    weekDiv.innerHTML = "";
+  }
+  chooseChart(showInfoStudent);
+});    
+
+
+// ******************** END BUTTONS *****************
+
+// ******************** SETTING BETWEEN CHARTS *****************
+
+function clearCharts() {
+  console.log("clear charts has fired");
+  var chartContainer = document.querySelector(".chart-container");
+  chartContainer.innerHTML = '';
+  var students = document.querySelector("#content");
+  students.innerHTML = '';  
+}
+
+function weekSelected() {
+  $( "#mynameisjanetpausejacksonifyernasty" ).change(function() {  
+    chart = $('#weekchart').highcharts();
+  if ($("#weekchart").length > 0) {      
+      restWeekChartData();     
+    } else {
+      chooseChart(weekChartCallback); 
+    }        
+  }); 
+}; 
+
+function restWeekChartData() {
+  var chart = $('#weekchart').highcharts();  
+  chart.series[0].processedYData = [];
+  allWeekScores = [];
+  goTotheChart(); 
+}  
+
+function goTotheChart() {
+  chooseChart(weekChartCallback);
+}
 
 function bubbleTableSelected() {
   $( "#mynameisjanetpausejacksonifyernasty" ).change(function() {  
   if ($("#bubble-table").length > 0) {      
-      destroyChart();     
+      restWeekChartData();     
     } else {
     var chartContainer = document.querySelector(".chart-container");
     var bubbleTable = document.createElement('div'); 
@@ -223,44 +146,103 @@ function bubbleTableSelected() {
     var tr = document.createElement('tr');
     tr.id = 'table-rows';
     tbody.appendChild(tr);
-    var topicColumn = document.createElement('th')
+    var topicColumn = document.createElement('th');
     topicColumn.textContent = " ****** ";
     tr.appendChild(topicColumn);
-    bubbleTableInit();  
+    chooseChart(bubbleTableCallback);
     }        
   }); 
 }; 
+
+// ******************** START HANDLEBARS FOR 'PER STUDENT' VIEWS *****************
+
+// THE CALLBACK FUNCTION TO RENDER THE 'PER STUDENT' HANDLEBAR TEMPLATE. 
+function showInfoStudent(data, tabletop) {
+  var source   = $("#spreadsheet-template").html();
+  var template = Handlebars.compile(source);
+  $.each( tabletop.sheets("Students").all(), function(i, spreadsheet) {
+    var html = template(spreadsheet);
+    $("#content").append(html);
+  });
+}
+
+// ******************** END HANDLEBARS *****************
+
+// *********** SETTING UP VARIABLES FOR CHARTS ***********************
+
+  weeklyMaxTotals = "";
+  combinedWeekTotalFromEachSpreadsheet = [];
+  reducedTotals = [];
+  reducedMaxTotals = [];
+  allWeeks = [];
+  allWeekScores = [];
+  data = "";
+  listofWeeks = [];
+  average = [];
+  selectedWeek = "";
+
+  weekTopics = [];
+  weekRows = [];
+  weekScores = [];
+
+  allNames = [];
+  theScores = [];
+  bubbleRows = [];
+  allRows = [];
+  singleSet = [];
+  arrays = [];
+
+
+// *********** END VARIABLES FOR CHARTS ***********************
+
+
+// *********** BEGIN CALLBACK FUNCTION FOR OVERVIEW CHART ***********************
+
+  function showInfo1(overviewData) {
  
-// 'BY STUDENT' BUTTON
-// render a page with a list of students that links to the drilldown per student.
-$( "#bystudent" ).click(function() {
-  var chartContainer = document.querySelector(".chart-container")
-  chartContainer.innerHTML = '';
-  if ($("#weekdiv").length > 0) {
-    var weekDiv = document.querySelector("#weekdiv")
-    weekDiv.innerHTML = "";
-  }
-  // studentSearch();
-  studentInit();
-});    
+  // *********** FOR OVERVIEW CHART ***********
+  // Y AXIS
+  // find all hashes that contain totals and put them in an array
+  overviewChartTitle = _.where(overviewData, {coursematerial: "Instance:"});  
+  overviewChartTitle = _.pluck(overviewChartTitle, 'value');
 
-// ******************** END BUTTONS *****************
+  weekly = _.where(overviewData, {week: "weektotal"}); 
+  combinedWeekTotalFromEachSpreadsheet.push(weekly); 
 
-// ******************** BEGIN STUDENT SEARCH *****************
+  // pluck from the 'value' column FOR STUDENT TOTALS
+  listofValues = []
+  for (i in combinedWeekTotalFromEachSpreadsheet) {listofValues.push(_.pluck(combinedWeekTotalFromEachSpreadsheet[i], "value"))};
+  // combine the totals from each spreadsheet
+  studentTotalsFromAllSpreadsheets = _.zip.apply([], listofValues);
+  reducedTotals = [];
+  for (i in studentTotalsFromAllSpreadsheets) {reducedTotals.push(_.reduce(studentTotalsFromAllSpreadsheets[i], function(memo, num){ return memo + num; }, 0))};
 
-// function studentSearch() {
-// append search bar
+  // pluck from the 'maxpoints' column FOR MAX POINT TOTALS
+  listofMaxValues = [];   
+  for (i in combinedWeekTotalFromEachSpreadsheet) {listofMaxValues.push(_.pluck(combinedWeekTotalFromEachSpreadsheet[i], "maxpoints"))};
+  maxTotalsFromAllSpreadsheets = _.zip.apply([], listofMaxValues);
+  reducedMaxTotals = [];
+  for (i in maxTotalsFromAllSpreadsheets) {reducedMaxTotals.push(_.reduce(maxTotalsFromAllSpreadsheets[i], function(memo, num){ return memo + num; }, 0))};
 
-// }
+  average = [];
+  // average
+  for( var i = 0 ; i < reducedTotals.length;i++){ average.push( reducedTotals[i] * 100 / reducedMaxTotals[i]) };
+    console.log("average: " + average);
 
-// ******************** END STUDENT SEARCH *****************
+  // X AXIS
+  weekname = _.where(overviewData, {week: "weekname"});  
+  allWeeks.push(weekname);
+  for (i in allWeeks) {listofWeeks.push(_.pluck(allWeeks[i], "coursematerial"))};
+};
+
+// *********** END OVERVIEW GRAPH SETUP ***********************
 
 // ******************** BEGIN HIGHCHARTS FOR OVERVIEW ***************** 
 
-function overviewChartInit() { 
-  var chartContainer = document.querySelector(".chart-container")
-  var overviewChart = document.createElement('div') 
-  overviewChart.id = "overviewchart"
+function appendOverviewChart() { 
+  var chartContainer = document.querySelector(".chart-container");
+  var overviewChart = document.createElement('div'); 
+  overviewChart.id = "overviewchart";
   chartContainer.appendChild(overviewChart);
 
   $('#overviewchart').highcharts({
@@ -291,25 +273,13 @@ function overviewChartInit() {
       data: average 
     }]
   });
+// };
 };
-
 // ******************** END HIGHCHARTS FOR OVERVIEW *****************
 
 // ******************** BEGIN HIGHCHARTS FOR WEEK VIEW *****************
 
-function weekChartInit() { 
-  for (i = 0; i < $result.length; i++) { 
-  Tabletop.init( { key: $result[i].innerHTML,
-                   callback: weekChartCallback,
-                   simpleSheet: true, 
-                   parseNumbers: true} );
-  }
-};
-
-dataForWeekChart = ""; 
-
-function weekChartCallback(spreadsheetData) { 
-  dataForWeekChart = spreadsheetData
+function weekChartCallback(dataForWeekChart) { 
   // SELECTED WEEK
   selectedWeek = parseInt(document.getElementById("mynameisjanetpausejacksonifyernasty").value.replace("week ", ""));
   console.log("selected week is: " + selectedWeek);
@@ -321,11 +291,11 @@ function weekChartCallback(spreadsheetData) {
   // // ************ FOR WEEK CHART *********** 
 
   // TITLE
-  weekChartTitle = _.where(dataForWeekChart, {coursematerial: "Instance:"})  
+  weekChartTitle = _.where(dataForWeekChart, {coursematerial: "Instance:"});  
   weekChartTitle = _.pluck(weekChartTitle, 'value');
   
   // X AXIS
-  weekRows = _.where(dataForWeekChart, {week: selectedWeek}) 
+  weekRows = _.where(dataForWeekChart, {week: selectedWeek}); 
   weekTopics = [];
   for (i in weekRows) {weekTopics.push(weekRows[i].coursematerial)};
 
@@ -369,42 +339,33 @@ reducedScores = [];
 
 // ******************** BEGIN BUBBLE TABLE ***************** 
 
-function bubbleTableInit() { 
-  for (i = 0; i < $result.length; i++) { 
-  Tabletop.init( { key: $result[i].innerHTML,
-                   callback: bubbleTableCallback,
-                   simpleSheet: true, 
-                   parseNumbers: true} );
-  }
-};
+ function bubbleTableCallback(dataForBubbleTable) {
 
- function bubbleTableCallback(tableData) {
-
-  dataForBubbleTable = tableData
   // SELECTED WEEK
   selectedWeek = parseInt(document.getElementById("mynameisjanetpausejacksonifyernasty").value.replace("week ", ""));
   console.log("selected week is: " + selectedWeek);
-  selectedRows = _.where(dataForBubbleTable, {week: selectedWeek}) 
-  weekTopics = [];
+  selectedRows = _.where(dataForBubbleTable, {week: selectedWeek}); 
+  onesetofTopics = _.pluck(selectedRows, 'coursematerial' );
+  singleSet.push(onesetofTopics);
+
+  size = 1;
+  while (onesetofTopics.length > 0)
+  arrays.push(onesetofTopics.splice(0, size)); 
   for (i in selectedRows) {weekTopics.push(selectedRows[i].coursematerial)};  
   theScores.push(selectedRows);
   moreScores = [];
   for (i in theScores) {moreScores.push(_.pluck(theScores[i], "value"))};
-  studentNames = _.where(dataForBubbleTable, {coursematerial: "Name:"});  
-  studentNames = _.pluck(studentNames, 'value');
-  console.log("all names: " + allNames)
-  allNames.push(studentNames);
-  bubbleRows = [];
-  bubbleRows = moreScores.push(weekTopics);
-  allRows = _.zip.apply([], moreScores); 
-
-
+    studentNames = _.where(dataForBubbleTable, {coursematerial: "Name:"});  
+    studentNames = _.pluck(studentNames, 'value');
+    allNames.push(studentNames);
+    bubbleRows = moreScores.push(weekTopics);
+    allRows = _.zip.apply([], moreScores);
   // START APPENDING TABLE ROWS
-  appendStudents(allNames);
+  appendNames(allNames);
+  
+ }; 
 
- } 
-
- function appendStudents(allNames) {
+ function appendNames(allNames) {
   var tr = document.getElementById('table-rows');
   var theStudents = document.createElement('th');
   var tbody = document.querySelector('tbody');
@@ -412,25 +373,23 @@ function bubbleTableInit() {
     theStudents.textContent = allNames[i];
   }
   theStudents.className = "students";
-  tr.appendChild(theStudents);
-    for (var i = 0; i < allRows.length; i++) {
-      var topicScoreRows = document.createElement('tr');
-      topicScoreRows.id = "table-rows"; 
-      eachRow = allRows[i];
-      for (var n = 0; n < allRows[0].length; n++) {
-        var eachRowText = document.createElement('td');
-        text = eachRow[n];  
-        eachRowText.textContent = allRows[i][n]; 
-        topicScoreRows.appendChild(eachRowText);   
-      } 
-      tbody.appendChild(topicScoreRows); 
-       
-    } 
-  // theStudents.className = "students";
-  // tr.appendChild(theStudents);
+  tr.appendChild(theStudents);  
+  console.log("bye")   
+  appendTopics(arrays);
+  };
+  
 
- }
+function appendTopics(arrays) {
+  var tbody = document.querySelector('tbody');  
+  for (var i = 0; i < arrays.length; i++) {         
+    var topicScoreRows = document.createElement('tr');
+    topicScoreRows.id = "chart-rows"; 
+    tbody.appendChild(topicScoreRows);
 
+  }   
+ console.log("inside appendTopics")
+  
+} 
 
 // ******************** END BUBBLE TABLE ***************** 
 
@@ -451,11 +410,8 @@ window.onload = function() {
       user_input.value = '';
     }
   }
-  //because we want to give the user a choice of pressing 'enter' or clicking on
-  //the Add Item button we add our inputEvent function to both types of events
   button.onclick = inputEvent;
-  user_input.onkeypress = inputEvent;
- 
+  user_input.onkeypress = inputEvent;  
 };
 
 
