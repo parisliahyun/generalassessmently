@@ -5,14 +5,14 @@ function filterCourses(text) {
     cache: false, 
     success: function(response) 
     { $result = $(response).find('#keys'); 
-    init(showInfo1);
+    init(showInfoOverview);
     }   
   });
 };
 
 function chooseChart(thisIsTheCallback) {
   init(thisIsTheCallback);
-  console.log("choose chart fired");
+  console.log("trumpets.'Choose chart' has fired.");
 }
 
 // *********** TABLETOP INITIALIZER ***********************
@@ -31,72 +31,80 @@ function init(thisIsTheCallback) {
 
 // 'OVERVIEW' BUTTON
 $( "#overview" ).click(function() {
+  resetWeekDiv();
   clearCharts();
-  if ($("#weekdiv").length > 0) {
-    var weekDiv = document.querySelector("#weekdiv");
-    weekDiv.innerHTML = '';
-  }
   appendOverviewChart();
 });
 
 // 'BY WEEK' BUTTON
 $( "#byweek" ).click(function() {
-  clearCharts();
-  var chartContainer = document.querySelector(".chart-container");
-  var weekDiv = document.createElement('div');
-  weekDiv.id = "weekdiv";
-  chartContainer.parentNode.insertBefore(weekDiv, chartContainer);
-  var weekSelect = document.createElement('select');
-  weekSelect.id = "mynameisjanetpausejacksonifyernasty";
-  weekSelect.name = "mynameisjanetpausejacksonifyernasty";
-  weekDiv.appendChild(weekSelect);
-    for (var i = 0; i < listofWeeks[0].length; i++) {
-      var weekOptions = document.createElement('option');
-      weekOptions.id = "weekoptions";
-      weekOptions.textContent = listofWeeks[0][i];
-      weekOptions.value = listofWeeks[0][i];
-      weekSelect.appendChild(weekOptions);
-    } 
-  weekSelected();
+  if ($("#weekdiv").length > 0) {   
+    weekSelected(); 
+    $( "#weekdiv" ).remove();    
+    clearCharts();
+  } else {
+    clearCharts();    
+    setWeekChartDom(); 
+    weekSelected();    
+  }
 });
 
 // 'BUBBLE TABLE' BUTTON
 $( "#bubblebutton" ).click(function() {
-  clearCharts();
-  var chartContainer = document.querySelector(".chart-container");
-  var weekDiv = document.createElement('div');
-  weekDiv.id = "weekdiv";
-  chartContainer.parentNode.insertBefore(weekDiv, chartContainer);
-  var weekSelect = document.createElement('select');
-  weekSelect.id = "mynameisjanetpausejacksonifyernasty";
-  weekSelect.name = "mynameisjanetpausejacksonifyernasty";
-  weekDiv.appendChild(weekSelect);
-    for (var i = 0; i < listofWeeks[0].length; i++) {
-      var weekOptions = document.createElement('option');
-      weekOptions.id = "weekoptions";
-      weekOptions.textContent = listofWeeks[0][i];
-      weekOptions.value = listofWeeks[0][i];
-      weekSelect.appendChild(weekOptions);
-    } 
+  resetWeekDiv();
+  setWeekChartDom();
   bubbleTableSelected();
-
 });
  
 // 'BY STUDENT' BUTTON
 $( "#bystudent" ).click(function() {
   var chartContainer = document.querySelector(".chart-container");
   chartContainer.innerHTML = '';
-  if ($("#weekdiv").length > 0) {
-    var weekDiv = document.querySelector("#weekdiv");
-    weekDiv.innerHTML = "";
-  }
+  resetWeekDiv();
   chooseChart(showInfoStudent);
 });    
 
 
 // ******************** END BUTTONS *****************
 
-// ******************** SETTING BETWEEN CHARTS *****************
+// ******************** SETTING  / RESETTING BETWEEN CHART VIEWS *****************
+
+function removeSelectButton() {
+  if ($("#weekdiv").length > 0) {  
+    $( "#weekdiv" ).remove();
+  }; 
+}
+
+function setWeekChartDom() {
+  clearCharts();
+  var chartContainer = document.querySelector(".chart-container");
+  var weekDiv = document.createElement('div');
+  weekDiv.id = "weekdiv";
+  chartContainer.parentNode.insertBefore(weekDiv, chartContainer);
+  var weekSelect = document.createElement('select');
+  weekSelect.id = "mynameisjanetpausejacksonifyernasty";
+  weekSelect.name = "mynameisjanetpausejacksonifyernasty";
+  weekDiv.appendChild(weekSelect);
+  for (var i = 0; i < listofWeeks[0].length; i++) {
+    var weekOptions = document.createElement('option');
+    weekOptions.id = "weekoptions";
+    weekOptions.textContent = listofWeeks[0][i];
+    weekOptions.value = listofWeeks[0][i];
+    weekSelect.appendChild(weekOptions);
+  };  
+};
+
+function weekSelected() {
+  $( "#mynameisjanetpausejacksonifyernasty" ).change(function() {  
+  chart = $('#weekchart').highcharts();
+  if ($("#weekchart").length > 0) {        
+      resetWeekChartData();     
+    } else {
+      chooseChart(showInfoWeek); 
+    }        
+  }); 
+
+}; 
 
 function clearCharts() {
   console.log("clear charts has fired");
@@ -106,32 +114,35 @@ function clearCharts() {
   students.innerHTML = '';  
 }
 
-function weekSelected() {
-  $( "#mynameisjanetpausejacksonifyernasty" ).change(function() {  
-    chart = $('#weekchart').highcharts();
-  if ($("#weekchart").length > 0) {      
-      restWeekChartData();     
-    } else {
-      chooseChart(weekChartCallback); 
-    }        
-  }); 
-}; 
+function resetWeekDiv() {   
+  if ($("#weekdiv").length > 0) {
+    console.log("if statement inside resetweekdiv fired")
+    var weekDiv = document.querySelector("#weekdiv");
+    weekDiv.innerHTML = "";
+    allWeekScores = [];
+    reducedScores = [];
+    combineScores = [];
+  };
+  removeSelectButton();
+}
 
-function restWeekChartData() {
+function resetWeekChartData() {
   var chart = $('#weekchart').highcharts();  
   chart.series[0].processedYData = [];
   allWeekScores = [];
+  reducedScores = [];
+  combineScores = [];
   goTotheChart(); 
 }  
 
 function goTotheChart() {
-  chooseChart(weekChartCallback);
+  chooseChart(showInfoWeek);
 }
 
 function bubbleTableSelected() {
   $( "#mynameisjanetpausejacksonifyernasty" ).change(function() {  
   if ($("#bubble-table").length > 0) {      
-      restWeekChartData();     
+      resetWeekChartData();     
     } else {
     var chartContainer = document.querySelector(".chart-container");
     var bubbleTable = document.createElement('div'); 
@@ -170,21 +181,21 @@ function showInfoStudent(data, tabletop) {
 
 // *********** SETTING UP VARIABLES FOR CHARTS ***********************
 
-  weeklyMaxTotals = "";
+  // for overview chart. (variables shared between tabletop callback function and highcharts function.)
   combinedWeekTotalFromEachSpreadsheet = [];
   reducedTotals = [];
   reducedMaxTotals = [];
   allWeeks = [];
   allWeekScores = [];
-  data = "";
   listofWeeks = [];
   average = [];
+  
+  // for week chart (variables shared with bubble table).
   selectedWeek = "";
-
-  weekTopics = [];
   weekRows = [];
   weekScores = [];
 
+  // for bubble table. in progress. 
   allNames = [];
   theScores = [];
   bubbleRows = [];
@@ -198,7 +209,7 @@ function showInfoStudent(data, tabletop) {
 
 // *********** BEGIN CALLBACK FUNCTION FOR OVERVIEW CHART ***********************
 
-  function showInfo1(overviewData) {
+  function showInfoOverview(overviewData) {
  
   // *********** FOR OVERVIEW CHART ***********
   // Y AXIS
@@ -206,11 +217,11 @@ function showInfoStudent(data, tabletop) {
   overviewChartTitle = _.where(overviewData, {coursematerial: "Instance:"});  
   overviewChartTitle = _.pluck(overviewChartTitle, 'value');
 
-  weekly = _.where(overviewData, {week: "weektotal"}); 
+  var weekly = _.where(overviewData, {week: "weektotal"}); 
   combinedWeekTotalFromEachSpreadsheet.push(weekly); 
 
   // pluck from the 'value' column FOR STUDENT TOTALS
-  listofValues = []
+  var listofValues = []
   for (i in combinedWeekTotalFromEachSpreadsheet) {listofValues.push(_.pluck(combinedWeekTotalFromEachSpreadsheet[i], "value"))};
   // combine the totals from each spreadsheet
   studentTotalsFromAllSpreadsheets = _.zip.apply([], listofValues);
@@ -230,7 +241,7 @@ function showInfoStudent(data, tabletop) {
     console.log("average: " + average);
 
   // X AXIS
-  weekname = _.where(overviewData, {week: "weekname"});  
+  var weekname = _.where(overviewData, {week: "weekname"});  
   allWeeks.push(weekname);
   for (i in allWeeks) {listofWeeks.push(_.pluck(allWeeks[i], "coursematerial"))};
 };
@@ -277,9 +288,9 @@ function appendOverviewChart() {
 };
 // ******************** END HIGHCHARTS FOR OVERVIEW *****************
 
-// ******************** BEGIN HIGHCHARTS FOR WEEK VIEW *****************
+// ******************** BEGIN CALLBACK FUNCTION AND HIGHCHARTS FOR WEEK VIEW *****************
 
-function weekChartCallback(dataForWeekChart) { 
+function showInfoWeek(dataForWeekChart) { 
   // SELECTED WEEK
   selectedWeek = parseInt(document.getElementById("mynameisjanetpausejacksonifyernasty").value.replace("week ", ""));
   console.log("selected week is: " + selectedWeek);
@@ -291,22 +302,22 @@ function weekChartCallback(dataForWeekChart) {
   // // ************ FOR WEEK CHART *********** 
 
   // TITLE
-  weekChartTitle = _.where(dataForWeekChart, {coursematerial: "Instance:"});  
+  var weekChartTitle = _.where(dataForWeekChart, {coursematerial: "Instance:"});  
   weekChartTitle = _.pluck(weekChartTitle, 'value');
   
   // X AXIS
   weekRows = _.where(dataForWeekChart, {week: selectedWeek}); 
-  weekTopics = [];
+  var weekTopics = [];
   for (i in weekRows) {weekTopics.push(weekRows[i].coursematerial)};
 
   // Y AXIS
   allWeekScores.push(weekRows);
-  weekScores = [];
+  var weekScores = [];
+  
   for (i in allWeekScores) {weekScores.push(_.pluck(allWeekScores[i], "value"))};
-  combineScores = [];
-  combineScores = _.zip.apply([], weekScores); 
-  reducedScores = [];
-  for (i in combineScores) {reducedScores.push(_.reduce(combineScores[i], function(memo, num){ return memo + num; }, 0))}; 
+  weekScores = _.zip.apply([], weekScores); 
+  var reducedScores = [];
+  for (i in weekScores) {reducedScores.push(_.reduce(weekScores[i], function(memo, num){ return memo + num; }, 0))}; 
   
   // THE WEEK CHART
   $('#weekchart').highcharts({
@@ -332,12 +343,11 @@ function weekChartCallback(dataForWeekChart) {
         data: reducedScores
       }], 
   });  
-reducedScores = [];
 }; // END WEEK CHART 
 
 // ******************** END HIGHCHARTS FOR WEEK VIEW ***************** 
 
-// ******************** BEGIN BUBBLE TABLE ***************** 
+// ******************** IN PROGRESS !!! -- BEGIN BUBBLE TABLE -- IN PROGRESS !!! ***************** 
 
  function bubbleTableCallback(dataForBubbleTable) {
 
@@ -378,7 +388,6 @@ reducedScores = [];
   appendTopics(arrays);
   };
   
-
 function appendTopics(arrays) {
   var tbody = document.querySelector('tbody');  
   for (var i = 0; i < arrays.length; i++) {         
@@ -395,18 +404,12 @@ function appendTopics(arrays) {
 
 window.onload = function() { 
   console.log("happy new year."); 
- //these elements will be used to get the user's input
   var user_input = document.getElementById('enter-course-field');
   var button = document.getElementById('add-item');
-  //this function will create a new todo task using the text entered into the field
-  //it responds to a mouse click and an 'enter' keypress events
-
   var inputEvent = function(event) {
-    //keyCode of 'enter' is 13, keyCode of leftclick is 0
     if(event.keyCode === 13 || event.keyCode === 0) {
       filterCourses(user_input.value);
       console.log(user_input.value);
-      //clear the input field
       user_input.value = '';
     }
   }
