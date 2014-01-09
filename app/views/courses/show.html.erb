@@ -1,14 +1,15 @@
-<h3>Title: <%= @course.title %></h3>
+<h2>Title: <%= @course.title %></h2>
 
 
-<p>Add a new spreadsheet:</p>
+<div class="well">
+<h4>Add a new spreadsheet:</h4>
 
 <%= render 'spreadsheetform' %>
-
-<h3>Current spreadsheets</h3>
-<ul>
+</div>
+<h2>Current spreadsheets</h2>
+<ul class="current-spreadsheets">
   <% @spreadsheets.all.each do |spreadsheet| %>
-    <li id="keys"><%= spreadsheet.google_key %><a target="_new" href="https://docs.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=<%= spreadsheet.google_key %>&output=html">Google</a>
+    <li id="keys"><%= spreadsheet.google_key %><a target="_new" href="https://docs.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=<%= spreadsheet.google_key %>&output=html"> Google</a>
       <% if !@updated.nil? and @updated.include?(spreadsheet) %>
         <span class="label label-success">Updated</span>
       <% end %>

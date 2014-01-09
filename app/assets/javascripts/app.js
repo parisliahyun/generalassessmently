@@ -122,9 +122,11 @@ function removeSelectButton() {
 function setWeekChartDom() {
   clearCharts();
   var chartContainer = document.querySelector(".chart-container");
+  var divWell = document.querySelector("#well");
   var weekDiv = document.createElement('div');
+  var byStudent = document.querySelector('#bystudent');
   weekDiv.id = "weekdiv";  
-  chartContainer.parentNode.insertBefore(weekDiv, chartContainer);
+  byStudent.parentNode.insertBefore(weekDiv, byStudent.nextSibling);
   var weekSelect = document.createElement('select');
   weekSelect.id = "mynameisjanetpausejacksonifyernasty";
   weekSelect.name = "mynameisjanetpausejacksonifyernasty";
@@ -347,7 +349,7 @@ function showInfoWeek(dataForWeekChart) {
   // THE WEEK CHART
   $('#weekchart').highcharts({
     chart: {
-        marginLeft: 320,
+        marginLeft: 190,
         type: 'bar'
     },
     title: {

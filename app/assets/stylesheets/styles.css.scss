@@ -1,11 +1,180 @@
+.navbar-inverse, .navbar, .navbar-default{
+  border-radius: 0;
+  background-color: white;
+  border-color: lightgray;
+  font-size: 16px;
+}
+
+.navbar-inverse .navbar-toggle {
+  border-color: #333333;
+  background-color: #545454 !important;
+}
+
 #overviewchart {
   width: 100%;
   height: 400px;
+  margin-top: 30px;
+  width: 70%;
+  text-align: center;
+  margin: 0 auto;
 }
 
 #weekchart {
-  width: 100%;
-  height: 4000px;
+  margin-top: 30px;
+  width: 70%;
+  text-align: center;
+  margin: 0 auto;
+  height: 3000px;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #545454;
+  font-family: Six Caps;
+  font-size: 40px !important;
 
 }
+
+.navbar-inverse .navbar-nav > li > a:hover {
+  color: #FF0000;
+}
+
+.navbar-brand {
+  color: #545454 !important;
+  font-family: Six Caps;
+  font-size: 45px !important;
+}
+
+.navbar-brand:hover {
+  color: #FF0000 !important;
+}
+
+h2 {
+  font-size: 20px;
+  color: #545454;
+  text-align: center;
+  font-family: News Cycle;
+
+}
+
+.current-spreadsheets {
+  text-align: center;
+  margin: 0 auto;
+  list-style-type: none;
+  font-family: News Cycle;
+}
+
+h3 {
+  margin-left: -4em;
+  margin-top: -.3em;
+  padding-bottom: 10px !important;
+  font-size: 16px;
+  color: #545454;
+  text-align: left;
+  font-family: News Cycle;
+  font-size: 20px;
+  font-style: italic;
+}
+
+#course-list {
+  margin-top: 70px !important;
+}
+
+#new-course {
+  margin-top: 70px !important;
+}
+
+#courses {
+  margin-top: 20px !important;
+  list-style-type: none;
+  text-align: center;
+  margin: 0 auto;
+  font-family: News Cycle;
+}
+
+#search-courses {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+#enter-course-field {
+  margin-right: 5px;
+}
+
+select {
+  width: 10em;
+  height: 2.1em;
+  background: white !important;;
+  border-color: lightgray;
+  font-family: News Cycle;
+  font-size: 16px;
+  color: #545454;
+}
+
+.well {
+  text-align: center;
+  border-radius: 10px;
+  width: 70%;
+  text-align: center;
+  margin: 0 auto;
+  margin-left: 0 auto;
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+}
+
+#overview {
+  margin-right: 5px;
+  font-size: 16px;
+  color: #545454;
+  border-radius: 10px !important;
+  font-family: News Cycle;
+}
+
+#byweek {
+  margin-right: 5px;
+  font-size: 16px;
+  color: #545454;
+  border-radius: 10px !important;
+  font-family: News Cycle;
+}
+
+#bystudent {
+  font-size: 16px;
+  color: #545454;
+  border-radius: 10px !important;
+  font-family: News Cycle;
+}
+#mynameisjanetpausejacksonifyernasty {
+  background-color: green !important;
+  text-align: center;
+  color: white;
+  margin-top: 20px;
+  border-radius: 15px !important;
+}
+
+#weekdiv {
+  margin-top: 10px;
+  margin: 0 auto;
+  text-align: center;
+  color: #545454;
+  font-family: News Cycle;
+}
+
+#add-item {
+  font-size: 16px;
+  color: #545454;
+  border-radius: 10px !important;
+  font-family: News Cycle;
+}
+
+#students {
+  margin-top: 50px !important;
+}
+
+.table {
+  font-family: News Cycle;
+  width: 40% !important;
+  margin: 0 auto;
+  border-radius: 15px !important;
+}
+
 
