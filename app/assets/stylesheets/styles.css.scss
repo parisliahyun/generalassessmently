@@ -234,14 +234,13 @@ select {
   height: 35px;
 }
 
-/*.footer {
- color: #FF0000 !important;
- position:absolute;
- bottom: 0;
- margin-left: 6px;
- width:100%;
- height:30px; 
-}*/
+#topics {
+  width: 40%;
+}
+
+#student-scores {
+  width: 20%;
+}
 
 * {
   margin: 0;
