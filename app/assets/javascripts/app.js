@@ -70,7 +70,7 @@ $( "#enter-course-field" ).change(function() {
   };  
   resetWeekDiv();
   clearCharts();
-  resetWeekChartData(); 
+  // resetWeekChartData(); 
 });
 
 // 'OVERVIEW' BUTTON
@@ -179,7 +179,7 @@ function resetWeekDiv() {
 
 function resetWeekChartData() {
   var chart = $('#weekchart').highcharts();  
-  chart.series[0].processedYData = [];
+  // chart.series[0].processedYData = [];
   allWeekScores = [];
   reducedScores = [];
   combineScores = [];
