@@ -79,14 +79,18 @@ function setWeekChartDom() {
   clearCharts();
   var chartContainer = document.querySelector(".chart-container");
   var weekDiv = document.createElement('div');
-  weekDiv.id = "weekdiv";
+  weekDiv.id = "weekdiv";  
   chartContainer.parentNode.insertBefore(weekDiv, chartContainer);
   var weekSelect = document.createElement('select');
   weekSelect.id = "mynameisjanetpausejacksonifyernasty";
   weekSelect.name = "mynameisjanetpausejacksonifyernasty";
-  weekDiv.appendChild(weekSelect);
-  for (var i = 0; i < listofWeeks[0].length; i++) {
-    var weekOptions = document.createElement('option');
+  $(weekSelect).hide().appendTo("#weekdiv").fadeIn(1000);
+  var weekOptionDefault = document.createElement('option');
+  weekOptionDefault.id = "weekoptiondefault";
+  weekOptionDefault.textContent = "Select a week";
+  weekSelect.appendChild(weekOptionDefault);
+  for (var i = 0; i < listofWeeks[0].length; i++) {   
+    var weekOptions = document.createElement('option'); 
     weekOptions.id = "weekoptions";
     weekOptions.textContent = listofWeeks[0][i];
     weekOptions.value = listofWeeks[0][i];
@@ -411,11 +415,16 @@ window.onload = function() {
       filterCourses(user_input.value);
       console.log(user_input.value);
       user_input.value = '';
+      $("#overview").fadeIn();
+      $("#byweek").fadeIn("slow");
+      $("#bystudent").fadeIn(3000);
     }
   }
   button.onclick = inputEvent;
   user_input.onkeypress = inputEvent;  
 };
+
+
 
 
 

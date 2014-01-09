@@ -2,6 +2,7 @@
 
   <div id="search-courses">
     <select class="btn btn-default" name="enter-course-field" id="enter-course-field">
+      <option value="Select a course">Select a course</option>
       <%= @courses.each do |course| %>
       <option value="<%= course.id %>"><%= course.title %></option>
       <% end %>
@@ -11,10 +12,10 @@
 
 <br>
     
-<input class="btn btn-default" id="overview" type="button" value="Overview" />
-<input class="btn btn-default" id="byweek" type="button" value="By Week" />
-<!-- <input class="btn btn-default" id="bubblebutton" type="button" value="Bubble Chart" /> -->
-<input class="btn btn-default" id="bystudent" type="button" value="By Student" />
+<input class="btn btn-default" style="display:none" id="overview" type="button" value="Overview" />
+<input class="btn btn-default" style="display:none" id="byweek" type="button" value="By Week" />
+<!-- <input class="btn btn-default" style="display:none" id="bubblebutton" type="button" value="Bubble Chart" /> -->
+<input class="btn btn-default" style="display:none" id="bystudent" type="button" value="By Student" />
 <br>
 <br>
 
