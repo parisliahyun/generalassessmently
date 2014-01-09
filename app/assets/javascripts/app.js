@@ -295,6 +295,9 @@ function appendOverviewChart() {
           text: 'SELF-ASSESSMENT SCORES ACROSS ALL STUDENTS'
         }
     },
+    tooltip: {
+      valueDecimals: 2
+    },
     series: [{
       name: 'STUDENT ASSESSMENT POINTS',
       data: reducedTotals
@@ -302,8 +305,8 @@ function appendOverviewChart() {
       name: 'MAXIMUM ASSESSMENT POINTS',
       data: reducedMaxTotals
     }, {
-      name: 'AVERAGE',
-      data: average 
+      name: 'AVERAGE %',
+      data: average
     }]
   });
 // };
@@ -432,10 +435,9 @@ window.onload = function() {
     if(event.keyCode === 13 || event.keyCode === 0) {
       filterCourses(user_input.value);
       console.log(user_input.value);
-      user_input.value = '';
       $("#overview").fadeIn();
       $("#byweek").fadeIn("slow");
-      $("#bystudent").fadeIn(3000);
+      $("#bystudent").fadeIn(1000);
     }
   }
   button.onclick = inputEvent;
