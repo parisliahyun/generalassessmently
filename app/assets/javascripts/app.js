@@ -27,7 +27,51 @@ function init(thisIsTheCallback) {
   }
 };
 
+// *********** SETTING UP VARIABLES FOR CHARTS ***********************
+
+  // for overview chart. (variables shared between tabletop callback function and highcharts function.)
+  combinedWeekTotalFromEachSpreadsheet = [];
+  reducedTotals = [];
+  reducedMaxTotals = [];
+  allWeeks = [];
+  allWeekScores = [];
+  listofWeeks = [];
+  average = [];
+  
+  // for week chart (variables shared with bubble table).
+  selectedWeek = "";
+  weekRows = [];
+  weekScores = [];
+
+  // for bubble table. in progress. 
+  allNames = [];
+  theScores = [];
+  bubbleRows = [];
+  allRows = [];
+  singleSet = [];
+  arrays = [];
+
+
+// *********** END VARIABLES FOR CHARTS ***********************
+
 // ******************** BUTTONS *****************
+
+$( "#enter-course-field" ).change(function() { 
+  $("#overview").fadeOut("slow");
+  $("#byweek").fadeOut("slow");
+  $("#bystudent").fadeOut("slow");
+  if ($("#overviewchart").length > 0) {
+    reducedTotals = [];
+    reducedMaxTotals = [];
+    allWeeks = [];
+    allWeekScores = [];
+    listofWeeks = [];
+    average = [];
+  };  
+  resetWeekDiv();
+  clearCharts();
+  resetWeekChartData(); 
+});
 
 // 'OVERVIEW' BUTTON
 $( "#overview" ).click(function() {
@@ -116,6 +160,7 @@ function clearCharts() {
   chartContainer.innerHTML = '';
   var students = document.querySelector("#content");
   students.innerHTML = '';  
+  combinedWeekTotalFromEachSpreadsheet = [];
 }
 
 function resetWeekDiv() {   
@@ -182,33 +227,6 @@ function showInfoStudent(data, tabletop) {
 }
 
 // ******************** END HANDLEBARS *****************
-
-// *********** SETTING UP VARIABLES FOR CHARTS ***********************
-
-  // for overview chart. (variables shared between tabletop callback function and highcharts function.)
-  combinedWeekTotalFromEachSpreadsheet = [];
-  reducedTotals = [];
-  reducedMaxTotals = [];
-  allWeeks = [];
-  allWeekScores = [];
-  listofWeeks = [];
-  average = [];
-  
-  // for week chart (variables shared with bubble table).
-  selectedWeek = "";
-  weekRows = [];
-  weekScores = [];
-
-  // for bubble table. in progress. 
-  allNames = [];
-  theScores = [];
-  bubbleRows = [];
-  allRows = [];
-  singleSet = [];
-  arrays = [];
-
-
-// *********** END VARIABLES FOR CHARTS ***********************
 
 
 // *********** BEGIN CALLBACK FUNCTION FOR OVERVIEW CHART ***********************

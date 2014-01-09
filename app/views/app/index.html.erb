@@ -2,7 +2,7 @@
 
   <div id="search-courses">
     <select class="btn btn-default" name="enter-course-field" id="enter-course-field">
-      <option value="Select a course">Select a course</option>
+      <option value="Select a course" id="course-options">Select a course</option>
       <%= @courses.each do |course| %>
       <option value="<%= course.id %>"><%= course.title %></option>
       <% end %>
