@@ -1,6 +1,6 @@
 GeneralAssessmently::Application.routes.draw do
   root 'app#index'
-  # resource :google_key, :only => :new
+  get "about" => "welcome#about"
   resources :process
   
   resources :courses do

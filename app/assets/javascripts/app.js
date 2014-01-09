@@ -22,7 +22,7 @@ function init(thisIsTheCallback) {
   Tabletop.init( { key: $result[i].innerHTML,
                    callback: thisIsTheCallback,
                    simpleSheet: true, 
-                   // proxy: 'https://s3.amazonaws.com/googlespreadsheets',
+                   // proxy: 'https://s3.amazonaws.com/googlespreadsheets', --> in progress
                    parseNumbers: true} );
   }
 };
