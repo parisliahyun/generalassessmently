@@ -4,3 +4,5 @@ General Assessment.ly is a Rails app that turns your google spreadsheets into pr
 
 * System dependencies: Google API, Datamapper, Fog, S3, Carrierwave, Bootstrap, HighCharts JS, Tabletop JS, Flatware, jQuery, Underscore, Handlebars JS, Postgres. 
 
+* Sample deployment: http://generalassessmently.herokuapp.com/
+
