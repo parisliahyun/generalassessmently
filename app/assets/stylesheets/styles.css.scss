@@ -234,11 +234,37 @@ select {
   height: 35px;
 }
 
-.footer {
+/*.footer {
  color: #FF0000 !important;
  position:absolute;
  bottom: 0;
  margin-left: 6px;
  width:100%;
  height:30px; 
+}*/
+
+* {
+  margin: 0;
 }
+html, body {
+  height: 100%;
+}
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -27px; /* the bottom margin is the negative value of the footer's height */
+}
+
+.footer, .push {
+  height: 27px; /* '.push' must be the same height as 'footer' */
+  color: #FF0000 !important;
+  margin-left: 6px;
+  }
+
+/*
+
+Sticky Footer by Ryan Fait
+http://ryanfait.com/
+
+*/
