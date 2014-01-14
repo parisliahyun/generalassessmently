@@ -93,6 +93,7 @@ h3 {
 
 #course-list {
   margin-top: 70px !important;
+  text-align: center;
 }
 
 #new-course {
@@ -103,8 +104,10 @@ h3 {
   margin-top: 20px !important;
   list-style-type: none;
   text-align: center;
-  margin: 0 auto;
+  margin-left: 0 auto;
+  margin-right: 0 auto;
   font-family: News Cycle;
+  width: 80%;
 }
 
 #search-courses {
@@ -232,6 +235,8 @@ select {
 
 #add-course {
   height: 35px;
+  width: 80%;
+  margin: 0 auto;
 }
 
 #topics {
@@ -256,6 +261,7 @@ html, body {
 }
 
 .footer, .push {
+  margin-top: 15px;
   height: 27px; /* '.push' must be the same height as 'footer' */
   color: #FF0000 !important;
   margin-left: 6px;

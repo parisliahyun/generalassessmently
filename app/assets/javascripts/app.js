@@ -349,7 +349,7 @@ function showInfoWeek(dataForWeekChart) {
   // THE WEEK CHART
   $('#weekchart').highcharts({
     chart: {
-        marginLeft: 190,
+        // marginLeft: 120,
         type: 'bar'
     },
     title: {
