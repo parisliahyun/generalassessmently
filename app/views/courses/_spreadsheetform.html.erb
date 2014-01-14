@@ -1,10 +1,13 @@
-<div class="span6">
-  <form action= "/courses/<%= @course.id %>/spreadsheets" method="post" class="form-inline">
-    <input name="key" id="spreadsheet-url" type="text" placeholder="Add a published URL"> 
-    <button type="submit" id="add-it-button" class="btn btn-default">Add it</button>
-  </form> 
-  <br>
-  <form action="/process" method="post">
-    <button type="submit" id="sync" class="btn btn-default">Sync spreadsheets to S3</button>
-  </form>
+<div class="well" id="add-spreadsheet">
+  <h4>Add a new spreadsheet:</h4>
+  <div class="span6">
+    <form action= "/courses/<%= @course.id %>/spreadsheets" method="post" class="form-inline">
+      <input name="key" id="spreadsheet-url" type="text" placeholder="Add a published URL"> 
+      <button type="submit" id="add-it-button" class="btn btn-default">Add it</button>
+    </form> 
+    <br>
+    <form action="/process" method="post">
+      <button type="submit" id="sync" class="btn btn-default">Sync spreadsheets to S3</button>
+    </form>
+  </div>
 </div>
