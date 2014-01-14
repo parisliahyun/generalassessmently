@@ -1,26 +1,16 @@
-<!-- UPLOAD SPREADSHEETS -->
-
-<!-- <div class="span6">
-  <h2>The Spreadsheets</h2>
-  <form action="/spreadsheets" method="post" class="form-inline">
-    <input name="key" type="text" placeholder="Add a published URL"> 
-    <button type="submit" class="btn btn-primary">Add it</button>
-  </form>  -->
-
-  <h3>Current spreadsheets</h3>
+<h3>Current spreadsheets</h3>
   <ul>
     <% Spreadsheet.all.each do |spreadsheet| %>
-      <li>
-        <%= spreadsheet.google_key %>
-        <a target="_new" href="https://docs.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=<%= spreadsheet.google_key %>&output=html">Google</a>
-<!--         <a target="_new" href="https://s3.amazonaws.com/ ENV['AWS_BUCKET'] %>/ spreadsheet.google_key %>">S3</a> -->
+    </li>
+      <%= spreadsheet.google_key %>
+      <a target="_new" href="https://docs.google.com/spreadsheet/pub?hl=en_US&hl=en_US&key=<%= spreadsheet.google_key %>&output=html">Google</a>
+<!--  <a target="_new" href="https://s3.amazonaws.com/ ENV['AWS_BUCKET'] %>/ spreadsheet.google_key %>">S3</a> -->
         <% if !@updated.nil? and @updated.include?(spreadsheet) %>
           <span class="label label-success">Updated</span>
         <% end %>
-      </li>
+    </li>
     <% end %> 
-  </ul>
-  
+  </ul> 
   <form action="/process" method="post">
     <p><button type="submit" class="btn btn-submit">Sync all spreadsheets</button></p>
   </form>
