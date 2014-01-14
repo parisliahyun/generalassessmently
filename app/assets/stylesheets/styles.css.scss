@@ -111,6 +111,9 @@ h3 {
 }
 
 #search-courses {
+  margin-left: 0 auto;
+  margin-right: 0 auto;
+  text-align: center;
   margin-top: 8px;
   margin-bottom: 8px;
 }
@@ -129,13 +132,16 @@ select {
   color: #545454;
 }
 
+#well {
+  margin: 0 auto;
+}
+
 .well {
   text-align: center;
   border-radius: 10px;
   width: 70%;
-  text-align: center;
-  margin: 0 auto;
-  margin-left: 0 auto;
+  margin-left: 0 auto !important;
+  margin-right: 0 auto !important;
   margin-top: 20px !important;
   margin-bottom: 20px !important;
 }
