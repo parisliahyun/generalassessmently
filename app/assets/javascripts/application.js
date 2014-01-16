@@ -17,8 +17,5 @@
 //= require highcharts
 //= require handlebars
 //= require underscore
-//= require backbone
-//= require backbone.tabletopSync
-//= require backbonerailsauthtokenadapter
 //= require tabletop
 //= require_tree .

@@ -6,7 +6,6 @@ class Course
   property :id, Serial
   property :title, String, :unique => true
   has n, :spreadsheets
-  # accepts_nested_attributes_for :spreadsheets
 end
 
 Course.model_name
