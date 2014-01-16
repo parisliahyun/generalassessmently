@@ -72,15 +72,6 @@ h2 {
 
 }
 
-.current-spreadsheets {
-  width: 60%;
-  text-align: center;
-  margin: 0 auto;
-  list-style-type: none;
-  font-family: News Cycle;
-  margin-bottom: 20px;
-}
-
 h3 {
   margin-left: 12px;
   margin-top: -.3em;
@@ -210,6 +201,7 @@ select {
   color: #545454;
   border-radius: 10px !important;
   font-family: News Cycle;
+  margin-top: -.8em !important;
   margin-bottom: 12px !important;
 }
 
@@ -267,7 +259,15 @@ select {
 }
 
 #course-li {
-  margin-left: -2em !important;
+  margin-left: -3em !important;
+}
+
+.current-spreadsheets {
+  text-align: center;
+  margin: 0 auto;
+  list-style-type: none;
+  font-family: News Cycle;
+  margin-bottom: 20px;
 }
 
 #keys {
