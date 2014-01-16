@@ -1,5 +1,5 @@
 class SpreadsheetsController < ApplicationController
-  before_filter :set_course
+
   def index
     @spreadsheets = Spreadsheet.all
     @spreadsheets.to_json
@@ -20,10 +20,7 @@ class SpreadsheetsController < ApplicationController
     course = Course.get(params[:course_id])
     spreadsheet = Spreadsheet.from_key(params["key"])
     course.spreadsheets << spreadsheet
-    spreadsheet.save!
-    course.spreadsheets.save!
     course.save!
-    # binding.pry
     if course.save
       @notice = "Added spreadsheet"
     else
@@ -36,12 +33,5 @@ class SpreadsheetsController < ApplicationController
     @updated = Spreadsheet.select(&:write_content)
     @notice = "Updated #{@updated.length} spreadsheets"
   end
-
-private
-
-def set_course
-  @course = Course.get(params[:id])
-  current_course = @course
-end
 
 end

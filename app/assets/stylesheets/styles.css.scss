@@ -95,6 +95,8 @@ h3 {
 #course-list {
   margin-top: 70px !important;
   text-align: center;
+  margin-left: 0 auto;
+  margin-right: 0 auto;
 }
 
 #new-course {
@@ -104,11 +106,10 @@ h3 {
 #courses {
   margin-top: 20px !important;
   list-style-type: none;
+  font-family: News Cycle;
   text-align: center;
   margin-left: 0 auto;
   margin-right: 0 auto;
-  font-family: News Cycle;
-  width: 80%;
 }
 
 #search-courses {
@@ -131,20 +132,6 @@ select {
   font-family: News Cycle;
   font-size: 16px;
   color: #545454;
-}
-
-#well, #about-well, #course-list, #new-course {
-  margin: 0 auto;
-}
-
-.well {
-  text-align: center;
-  border-radius: 10px;
-  width: 70%;
-  margin-left: 0 auto !important;
-  margin-right: 0 auto !important;
-  margin-top: 20px !important;
-  margin-bottom: 20px !important;
 }
 
 #overview {
@@ -215,7 +202,7 @@ select {
   font-family: News Cycle;
 }
 
-#add-course-button {
+#add-course-button, #sync, #add-it-button {
   margin-top: 6px;
 }
 
@@ -226,7 +213,7 @@ select {
   color: #545454;
   border-radius: 10px !important;
   font-family: News Cycle;
-  margin-bottom: 12px !important;;
+  margin-bottom: 12px !important;
 }
 
 #spreadsheet-url, #add-course {
@@ -256,6 +243,20 @@ select {
 
 #student-scores {
   width: 20%;
+}
+
+#well, #about-well, #course-list, #new-course {
+  margin: 0 auto;
+}
+
+.well {
+  border-radius: 10px;
+  width: 70%;
+  margin-left: 0 auto !important;
+  margin-right: 0 auto !important;
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+  text-align: center !important;
 }
 
 * {
