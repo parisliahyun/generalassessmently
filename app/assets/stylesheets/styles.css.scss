@@ -156,6 +156,7 @@ select {
   color: #545454;
   font-family: News Cycle;
 }
+
 .btn:focus {
   border-radius: 10px !important;
 }
@@ -279,9 +280,11 @@ select {
 * {
   margin: 0;
 }
+
 html, body {
   height: 100%;
 }
+
 .wrapper {
   min-height: 100%;
   height: auto !important;
@@ -302,3 +305,12 @@ Sticky Footer by Ryan Fait
 http://ryanfait.com/
 
 */
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+
+#new-course, #course-list {
+  margin-top: 18px !important;
+}
+
+  }
