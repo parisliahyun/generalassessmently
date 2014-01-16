@@ -116,7 +116,7 @@ h3 {
   margin-left: 0 auto;
   margin-right: 0 auto;
   text-align: center;
-  margin-top: 8px;
+  margin-top: 22px;
   margin-bottom: 8px;
 }
 
@@ -175,7 +175,7 @@ select {
   border-radius: 10px !important;
 }
 
-#add-item {
+#select-button {
   font-size: 16px;
   margin-top: -7px;
   color: #545454;
@@ -194,16 +194,19 @@ select {
   border-radius: 15px !important;
 }
 
-#add-it-button, #add-course-button {
+#add-spreadsheet-button {
   font-size: 16px;
-  margin-top: -7px;
+  margin-top: -4px;
   color: #545454;
   border-radius: 10px !important;
   font-family: News Cycle;
 }
 
-#add-course-button, #sync, #add-it-button {
-  margin-top: 6px;
+#add-course-button {
+  font-size: 16px;
+  color: #545454;
+  border-radius: 10px !important;
+  font-family: News Cycle;
 }
 
 #sync {
@@ -216,24 +219,26 @@ select {
   margin-bottom: 12px !important;
 }
 
-#spreadsheet-url, #add-course {
+#spreadsheet-url {
   border-radius: 10px !important;
-  font-family: News Cycle;
   text-align: center;
-  width: 200px;
-  height: 30px;
+  height: 35px;
   margin-right: 10px;
-  margin-top: 20px;
+  margin-top: 16px;
   margin-bottom: 10px;
+  width: 200px;
 }
 
-#add-spreadsheet {
+#spreadsheet-well {
   margin: 0 auto;
 }
 
 #add-course {
+  border-radius: 10px !important;
+  font-family: News Cycle;
   height: 35px;
-  width: 80%;
+  width: 200px;
+  margin-top: 18px;
   margin: 0 auto;
 }
 

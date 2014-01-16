@@ -432,7 +432,7 @@ function appendTopics(arrays) {
 window.onload = function() { 
   console.log("happy new year."); 
   var user_input = document.getElementById('enter-course-field');
-  var button = document.getElementById('add-item');
+  var button = document.getElementById('select-button');
   var inputEvent = function(event) {
     if(event.keyCode === 13 || event.keyCode === 0) {
       filterCourses(user_input.value);

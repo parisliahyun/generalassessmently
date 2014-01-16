@@ -1,9 +1,9 @@
-<div class="well" id="add-spreadsheet">
+<div class="well" id="spreadsheet-well">
   <h4>Add a new spreadsheet:</h4>
   <div class="span6">
     <form action= "/courses/<%= @course.id %>/spreadsheets" method="post" class="form-inline">
-      <input name="key" id="spreadsheet-url" id="add-another-spreadsheet" type="text" placeholder="Spreadsheet URL"> 
-      <button type="submit" id="add-it-button" class="btn btn-default">Add it</button>
+      <input name="key" id="spreadsheet-url" type="text" placeholder="Spreadsheet URL"> 
+      <button type="submit" id="add-spreadsheet-button" class="btn btn-default">Add it</button>
     </form> 
     <br>
     <form action="/process" method="post">
