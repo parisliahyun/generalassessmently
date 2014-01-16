@@ -7,7 +7,6 @@ class SpreadsheetsController < ApplicationController
 
   def new
     @course = Course.get(params[:course_id])
-    render :new=>"new"
   end
 
   def show
